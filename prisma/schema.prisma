@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+model Batch {
+  id          String   @id @default(uuid())
+
+  batchNumber Int      @unique
+
+  name        String
+
+  createdAt   DateTime @default(now())
+
+  printedAt   DateTime?
+
+  shareToken  String?  @unique
+
+  qrs         QR[]
+
+  @@map("batches")
+}
+
+model QR {
+  id          String   @id @default(uuid())
+
+  qrNumber    Int      @unique
+
+  token       String   @unique
+
+  status      QRStatus @default(ACTIVE)
+
+  createdAt   DateTime @default(now())
+
+  redeemedAt  DateTime?
+
+  batchId     String
+
+  batch       Batch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+
+  @@map("qrs")
+}
+
+enum QRStatus {
+  ACTIVE
+  USED
+}
