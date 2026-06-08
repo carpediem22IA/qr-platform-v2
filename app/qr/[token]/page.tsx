@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import RedeemButton from "./RedeemButton";
 
 // ========================================
 // PÁGINA PÚBLICA DE VALIDACIÓN QR
@@ -93,6 +94,8 @@ export default async function QRPage({ params }: Props) {
           <p>QR: {qr.qrNumber.toString().padStart(4, "0")}</p>
           <p>Token: {qr.token}</p>
         </div>
+		{/* BOTÓN CANJEAR */}
+        <RedeemButton token={qr.token} />
       </div>
     </main>
   );
