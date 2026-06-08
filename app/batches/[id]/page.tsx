@@ -76,7 +76,7 @@ export default async function BatchPage({ params }: Props) {
       {/* TARJETAS DE ESTADÍSTICAS */}
       {/* ======================================== */}
 
-      <div className="grid grid-cols-3 gap-2 mt-4">
+       <div className="grid grid-cols-2 gap-2 mt-4">
         {/* Total QR */}
         <div className="border rounded-lg p-3 text-center">
           <div className="text-xl font-bold">{totalQR}</div>
@@ -93,6 +93,21 @@ export default async function BatchPage({ params }: Props) {
         <div className="border rounded-lg p-3 text-center">
           <div className="text-xl font-bold text-red-600">{usedQR}</div>
           <div className="text-xs text-gray-500">Usados</div>
+        </div>
+
+        {/* Estado de impresión */}
+        <div className="border rounded-lg p-3 text-center">
+          {batch.printedAt ? (
+            <>
+              <div className="text-xl font-bold text-blue-600">✓</div>
+              <div className="text-xs text-gray-500">Impreso</div>
+            </>
+          ) : (
+            <>
+              <div className="text-xl font-bold text-gray-400">—</div>
+              <div className="text-xs text-gray-500">Sin imprimir</div>
+            </>
+          )}
         </div>
       </div>
 

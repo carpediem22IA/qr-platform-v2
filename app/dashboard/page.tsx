@@ -50,9 +50,14 @@ export default async function DashboardPage() {
                 href={`/batches/${batch.id}`}
                 className="block rounded-lg border p-4 hover:bg-gray-50"
               >
-                <div className="font-semibold">Lote {batch.batchNumber}</div>
-                <div className="text-sm text-gray-600">{batch.name}</div>
-                <div className="text-sm mt-2">{batch._count.qrs} QR</div>
+               <div className="font-semibold flex items-center gap-2">
+                 Lote {batch.batchNumber}
+                {batch.printedAt && (
+                <span className="text-blue-600 text-sm">✓</span>
+              )}
+            </div>
+               <div className="text-sm text-gray-600">{batch.name}</div>
+               <div className="text-sm mt-2">{batch._count.qrs} QR</div>
               </Link>
             ))
           )}

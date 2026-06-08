@@ -106,7 +106,7 @@ export default async function BatchPrintPage({ params }: Props) {
 
         {/* BOTÓN IMPRIMIR */}
 		
-        <PrintButton />
+        <PrintButton batchId={batch.id} />
 		
       </div>
 

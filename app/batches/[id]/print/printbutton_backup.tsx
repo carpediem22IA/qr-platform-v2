@@ -15,14 +15,17 @@ interface Props {
 export default function PrintButton({ batchId }: Props) {
   const [loading, setLoading] = useState(false);
 
-    const handlePrint = async () => {
+  const handlePrint = async () => {
     setLoading(true);
 
-    // Marcar lote como impreso
-    const res = await fetch(`/api/batches/${batchId}/print`, {
-      method: "POST",
-    });
-    console.log("API print response:", res.status);
+    try {
+      // Marcar lote como impreso
+      await fetch(`/api/batches/${batchId}/print`, {
+        method: "POST",
+      });
+    } catch {
+      // Si falla, imprimimos igual
+    }
 
     setLoading(false);
     window.print();
