@@ -3,9 +3,58 @@
 // QR Platform V2
 // ========================================
 
-import Link from "next/link";
+export const dynamic = "force-dynamic"; //Prueba error listado últimos lotes. Ahora se muestran todos los registros porque el dashboard debe mostrar datos actualizados constantemente.
 
-export default function DashboardPage() {
+import Link from "next/link";
+import { prisma } from "@/lib/prisma";
+
+
+// ========================================
+// OBTENER LOTES
+// ========================================
+
+const batches = await prisma.batch.findMany({
+  orderBy: {
+    batchNumber: "asc",
+  },
+
+  include: {
+    _count: {
+      select: {
+        qrs: true,
+      },
+    },
+  },
+});
+
+//Prueba error listado DASHBOARD
+
+console.log("TOTAL BATCHES:", batches.length);
+
+console.log(
+  batches.map((b) => ({
+    batchNumber: b.batchNumber,
+    name: b.name,
+  }))
+);
+
+// ========================================
+// ¿Cuántos lotes imprime el console.log?
+// ========================================
+
+console.log(
+  "BATCHES:",
+  batches.map((b) => ({
+    batchNumber: b.batchNumber,
+    name: b.name,
+  }))
+);
+
+// ===================================================
+// Tarda un tiempo en actualizarse el listado de lotes
+// ===================================================
+
+export default async function DashboardPage() {
   return (
     <main className="min-h-screen p-4 max-w-md mx-auto">
       {/* CABECERA */}
@@ -13,6 +62,12 @@ export default function DashboardPage() {
       <h1 className="text-2xl font-bold mb-6">
         QR Platform V2
       </h1>
+	  
+	{/*Prueba error listado DASHBOARD*/}
+	  
+	<div className="mb-4">
+     Total lotes: {batches.length}
+    </div>
 
       {/* ACCIÓN PRINCIPAL */}
 
@@ -30,9 +85,36 @@ export default function DashboardPage() {
           Últimos lotes
         </h2>
 
-        <div className="rounded-lg border p-4 text-sm text-gray-500">
-          No hay lotes todavía
+{/* ======================================== */}
+{/* LISTADO DE LOTES */}
+{/* ======================================== */}
+
+<div className="space-y-3">
+  {batches.length === 0 ? (
+    <div className="rounded-lg border p-4 text-sm text-gray-500">
+      No hay lotes todavía
+    </div>
+  ) : (
+    batches.map((batch) => (
+      <div
+        key={batch.id}
+        className="rounded-lg border p-4"
+      >
+        <div className="font-semibold">
+          Lote {batch.batchNumber}
         </div>
+
+        <div className="text-sm text-gray-600">
+          {batch.name}
+        </div>
+
+        <div className="text-sm mt-2">
+          {batch._count.qrs} QR
+        </div>
+      </div>
+    ))
+  )}
+</div>
       </section>
 
       {/* ACCIONES FUTURAS */}
