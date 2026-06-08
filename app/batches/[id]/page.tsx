@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import ShareButton from "./ShareButton";
 
 // ========================================
 // DETALLE DE LOTE
@@ -123,16 +124,21 @@ export default async function BatchPage({ params }: Props) {
           </div>
         ))}
       </div>
-    {/* ======================================== */}
-      {/* BOTÓN VISTA PREVIA E IMPRIMIR */}
+      {/* ======================================== */}
+      {/* BOTONES DE ACCIÓN */}
       {/* ======================================== */}
 
-      <div className="mt-8">
+      <div className="mt-8 flex gap-2">
+        <ShareButton
+          batchNumber={batch.batchNumber}
+          batchName={batch.name}
+          shareUrl={`${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/batches/${batch.id}`}
+        />
         <Link
           href={`/batches/${batch.id}/print`}
-          className="block w-full rounded-lg bg-black text-white p-4 text-center font-medium hover:bg-gray-800"
+          className="flex-1 rounded-lg bg-black text-white p-4 text-center font-medium hover:bg-gray-800"
         >
-          🖨️ Vista previa e imprimir
+          🖨️ Imprimir
         </Link>
       </div>
     </main>
