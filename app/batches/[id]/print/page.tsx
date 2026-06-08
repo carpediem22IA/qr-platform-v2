@@ -68,6 +68,12 @@ export default async function BatchPrintPage({ params }: Props) {
             @page {
               size: A4;
               margin: 10mm;
+              @top-right {
+                content: "renovacionfemenina.org";
+                font-size: 10px;
+                color: #94a3b8;
+                font-family: Arial, Helvetica, sans-serif;
+              }
             }
             .no-print {
               display: none !important;
