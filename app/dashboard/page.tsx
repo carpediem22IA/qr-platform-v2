@@ -86,13 +86,18 @@ export default async function DashboardPage() {
 
       {/* ACCIONES FUTURAS */}
       <div className="mt-8 flex gap-2">
-        <button className="flex-1 rounded-xl border border-slate-200 p-3 text-slate-500 bg-white shadow-sm">
-          Compartir
-        </button>
-
-        <button className="flex-1 rounded-xl border border-slate-200 p-3 text-slate-500 bg-white shadow-sm">
+        <Link
+          href="/batches/print-all"
+          className="flex-1 rounded-xl bg-indigo-600 text-white p-3 text-center font-medium hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition"
+        >
           Imprimir
-        </button>
+        </Link>
+        <Link
+          href="/dashboard/stats"
+          className="flex-1 rounded-xl bg-emerald-600 text-white p-3 text-center font-medium hover:bg-emerald-700 shadow-sm shadow-emerald-200 transition"
+        >
+          Estadísticas
+        </Link>
       </div>
     </main>
   );
