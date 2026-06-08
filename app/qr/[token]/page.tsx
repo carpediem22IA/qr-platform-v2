@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import RedeemButton from "./RedeemButton";
+import RedeemButton from "@/components/RedeemButton";
 
 // ========================================
 // PÁGINA PÚBLICA DE VALIDACIÓN QR
@@ -42,8 +42,10 @@ export default async function QRPage({ params }: Props) {
       <main className="min-h-screen flex items-center justify-center p-4">
         <div className="text-center max-w-md">
           <div className="text-4xl mb-4">❓</div>
-          <h1 className="text-2xl font-bold mb-2">QR no encontrado</h1>
-          <p className="text-gray-600">
+          <h1 className="text-2xl font-bold mb-2 text-slate-800">
+            QR no encontrado
+          </h1>
+          <p className="text-slate-500">
             Este código QR no existe en el sistema.
           </p>
         </div>
@@ -60,11 +62,13 @@ export default async function QRPage({ params }: Props) {
       <main className="min-h-screen flex items-center justify-center p-4">
         <div className="text-center max-w-md">
           <div className="text-4xl mb-4">❌</div>
-          <h1 className="text-2xl font-bold mb-2">QR ya canjeado</h1>
-          <p className="text-gray-600 mb-4">
+          <h1 className="text-2xl font-bold mb-2 text-slate-800">
+            QR ya canjeado
+          </h1>
+          <p className="text-slate-500 mb-4">
             Este código ya fue utilizado.
           </p>
-          <div className="bg-gray-100 rounded-lg p-4 text-sm text-gray-500">
+          <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 text-sm text-slate-500">
             <p>Lote: {qr.batch.name}</p>
             <p>QR: {qr.qrNumber.toString().padStart(4, "0")}</p>
             {qr.redeemedAt && (
@@ -84,17 +88,26 @@ export default async function QRPage({ params }: Props) {
     <main className="min-h-screen flex items-center justify-center p-4">
       <div className="text-center max-w-md">
         <div className="text-4xl mb-4">✅</div>
-        <h1 className="text-2xl font-bold mb-2">QR Válido</h1>
-        <p className="text-gray-600 mb-6">
+        <h1 className="text-2xl font-bold mb-2 text-slate-800">
+          QR Válido
+        </h1>
+        <p className="text-slate-500 mb-6">
           Este código está activo y listo para canjear.
         </p>
 
-        <div className="bg-green-50 rounded-lg p-4 mb-6 text-sm">
-          <p className="font-medium">Lote: {qr.batch.name}</p>
-          <p>QR: {qr.qrNumber.toString().padStart(4, "0")}</p>
-          <p>Token: {qr.token}</p>
+        <div className="bg-white rounded-xl border border-green-100 shadow-sm p-4 mb-6 text-sm">
+          <p className="font-medium text-slate-800">
+            Lote: {qr.batch.name}
+          </p>
+          <p className="text-slate-500">
+            QR: {qr.qrNumber.toString().padStart(4, "0")}
+          </p>
+          <p className="text-slate-400 font-mono text-xs">
+            {qr.token}
+          </p>
         </div>
-		{/* BOTÓN CANJEAR */}
+
+        {/* BOTÓN CANJEAR */}
         <RedeemButton token={qr.token} />
       </div>
     </main>

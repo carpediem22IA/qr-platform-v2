@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import ShareButton from "./ShareButton";
+import ShareButton from "@/components/ShareButton";
 
 // ========================================
 // DETALLE DE LOTE
@@ -42,7 +42,7 @@ export default async function BatchPage({ params }: Props) {
 
   if (!batch) {
     return (
-      <main className="p-4">
+      <main className="p-4 text-center text-slate-500">
         Lote no encontrado
       </main>
     );
@@ -62,50 +62,50 @@ export default async function BatchPage({ params }: Props) {
       {/* CABECERA + VOLVER */}
       {/* ======================================== */}
 
-      <Link href="/dashboard" className="text-sm underline">
+      <Link href="/dashboard" className="text-sm text-indigo-600 hover:text-indigo-700">
         ← Volver
       </Link>
 
-      <h1 className="text-2xl font-bold mt-4">
+      <h1 className="text-2xl font-bold mt-4 text-slate-800">
         Lote {batch.batchNumber}
       </h1>
 
-      <p className="text-gray-600">{batch.name}</p>
+      <p className="text-slate-500">{batch.name}</p>
 
       {/* ======================================== */}
       {/* TARJETAS DE ESTADÍSTICAS */}
       {/* ======================================== */}
 
-       <div className="grid grid-cols-2 gap-2 mt-4">
+      <div className="grid grid-cols-2 gap-2 mt-4">
         {/* Total QR */}
-        <div className="border rounded-lg p-3 text-center">
-          <div className="text-xl font-bold">{totalQR}</div>
-          <div className="text-xs text-gray-500">Total</div>
+        <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-3 text-center">
+          <div className="text-xl font-bold text-slate-800">{totalQR}</div>
+          <div className="text-xs text-slate-500">Total</div>
         </div>
 
         {/* QR Activos */}
-        <div className="border rounded-lg p-3 text-center">
+        <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-3 text-center">
           <div className="text-xl font-bold text-green-600">{activeQR}</div>
-          <div className="text-xs text-gray-500">Activos</div>
+          <div className="text-xs text-slate-500">Activos</div>
         </div>
 
         {/* QR Usados */}
-        <div className="border rounded-lg p-3 text-center">
+        <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-3 text-center">
           <div className="text-xl font-bold text-red-600">{usedQR}</div>
-          <div className="text-xs text-gray-500">Usados</div>
+          <div className="text-xs text-slate-500">Usados</div>
         </div>
 
         {/* Estado de impresión */}
-        <div className="border rounded-lg p-3 text-center">
+        <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-3 text-center">
           {batch.printedAt ? (
             <>
-              <div className="text-xl font-bold text-blue-600">✓</div>
-              <div className="text-xs text-gray-500">Impreso</div>
+              <div className="text-xl font-bold text-indigo-500">✓</div>
+              <div className="text-xs text-slate-500">Impreso</div>
             </>
           ) : (
             <>
-              <div className="text-xl font-bold text-gray-400">—</div>
-              <div className="text-xs text-gray-500">Sin imprimir</div>
+              <div className="text-xl font-bold text-slate-300">—</div>
+              <div className="text-xs text-slate-500">Sin imprimir</div>
             </>
           )}
         </div>
@@ -115,16 +115,16 @@ export default async function BatchPage({ params }: Props) {
       {/* LISTADO DE QR DEL LOTE */}
       {/* ======================================== */}
 
-      <div className="space-y-3 mt-6">
+      <div className="space-y-2 mt-6">
         {batch.qrs.map((qr) => (
-          <div key={qr.id} className="border rounded-lg p-4">
+          <div key={qr.id} className="bg-white rounded-xl border border-slate-100 shadow-sm p-4">
             {/* Número de QR */}
-            <div className="font-medium">
+            <div className="font-medium text-slate-800">
               QR {qr.qrNumber}
             </div>
 
             {/* Token único */}
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-slate-500 font-mono">
               {qr.token}
             </div>
 
@@ -139,6 +139,7 @@ export default async function BatchPage({ params }: Props) {
           </div>
         ))}
       </div>
+
       {/* ======================================== */}
       {/* BOTONES DE ACCIÓN */}
       {/* ======================================== */}
@@ -151,7 +152,7 @@ export default async function BatchPage({ params }: Props) {
         />
         <Link
           href={`/batches/${batch.id}/print`}
-          className="flex-1 rounded-lg bg-black text-white p-4 text-center font-medium hover:bg-gray-800"
+          className="flex-1 rounded-xl bg-indigo-600 text-white p-4 text-center font-medium hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition"
         >
           🖨️ Imprimir
         </Link>

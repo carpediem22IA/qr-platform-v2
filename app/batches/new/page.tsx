@@ -17,33 +17,25 @@ export default function NewBatchPage() {
   // ========================================
 
   const [name, setName] = useState("");
-
   const [quantity, setQuantity] = useState(10);
-
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(
-    event: React.FormEvent
-  ) {
+  async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
 
     try {
       setLoading(true);
 
-      const response = await fetch(
-        "/api/batches",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-          body: JSON.stringify({
-            name,
-			quantity,
-          }),
-        }
-      );
+      const response = await fetch("/api/batches", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          quantity,
+        }),
+      });
 
       if (!response.ok) {
         throw new Error();
@@ -60,82 +52,61 @@ export default function NewBatchPage() {
   return (
     <main className="min-h-screen p-4 max-w-md mx-auto">
       {/* VOLVER */}
-
       <div className="mb-6">
         <Link
           href="/dashboard"
-          className="text-sm underline"
+          className="text-sm text-indigo-600 hover:text-indigo-700"
         >
           ← Volver
         </Link>
       </div>
 
       {/* CABECERA */}
-
-      <h1 className="text-2xl font-bold mb-6">
+      <h1 className="text-2xl font-bold mb-6 text-slate-800">
         Crear lote
       </h1>
 
       {/* FORMULARIO */}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* NOMBRE DEL LOTE */}
+        <div>
+          <label className="block mb-2 text-sm font-medium text-slate-600">
+            Nombre del lote
+          </label>
 
-      <form
-		onSubmit={handleSubmit}
-		className="space-y-4"
-	  >
-		{/* ========================================
-			NOMBRE DEL LOTE
-			======================================== */}
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            type="text"
+            placeholder="Ej: Junio 2026"
+            className="w-full border border-slate-200 rounded-xl p-3 bg-white text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-sm"
+          />
+        </div>
 
-		<div>
-		  <label className="block mb-2 text-sm font-medium">
-			Nombre del lote
-		  </label>
+        {/* CANTIDAD QR */}
+        <div>
+          <label className="block mb-2 text-sm font-medium text-slate-600">
+            Cantidad de QR
+          </label>
 
-		  <input
-           value={name}
-		   onChange={(e) =>
-			setName(e.target.value)
-		   }
-			type="text"
-			placeholder="Ej: Junio 2026"
-			className="w-full border rounded-lg p-3"
-		  />
-		</div>
+          <input
+            value={quantity}
+            onChange={(e) => setQuantity(Number(e.target.value))}
+            type="number"
+            min="1"
+            className="w-full border border-slate-200 rounded-xl p-3 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-sm"
+          />
+        </div>
 
-		{/* ========================================
-			CANTIDAD QR
-			======================================== */}
-
-		<div>
-		  <label className="block mb-2 text-sm font-medium">
-			Cantidad de QR
-		  </label>
-
-		  <input
-			value={quantity}
-			onChange={(e) =>
-			  setQuantity(Number(e.target.value))
-			}
-			type="number"
-			min="1"
-			className="w-full border rounded-lg p-3"
-		  />
-		</div>
-
-		{/* ========================================
-			BOTÓN CREAR
-			======================================== */}
-
-		<button
-		  type="submit"
-		  disabled={loading}
-		  className="w-full border rounded-lg p-4 font-medium"
-		>
-		 {loading
-		   ? "Creando..."
-		   : "Crear lote"}
-		</button>
-	  </form>
+        {/* BOTÓN CREAR */}
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full rounded-xl bg-indigo-600 text-white p-4 font-medium hover:bg-indigo-700 disabled:opacity-50 shadow-sm shadow-indigo-200 transition"
+        >
+          {loading ? "Creando..." : "Crear lote"}
+        </button>
+      </form>
     </main>
   );
 }

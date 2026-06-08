@@ -23,24 +23,38 @@ export default async function DashboardPage() {
   });
 
   return (
-    <main className="min-h-screen p-4 max-w-md mx-auto">
-      <h1 className="text-2xl font-bold mb-6">QR Platform V2</h1>
+    <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white p-4 max-w-md mx-auto">
+      {/* CABECERA */}
+      <h1 className="text-3xl font-bold mb-2 text-slate-800">
+        QR Platform
+      </h1>
+      <p className="text-slate-500 mb-6 text-sm">
+        Gestiona tus lotes y códigos QR
+      </p>
 
-      <div className="mb-4">Total lotes: {batches.length}</div>
+      {/* ESTADÍSTICA RÁPIDA */}
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 mb-6">
+        <div className="text-3xl font-bold text-indigo-600">{batches.length}</div>
+        <div className="text-sm text-slate-500">Lotes creados</div>
+      </div>
 
+      {/* ACCIÓN PRINCIPAL */}
       <Link
         href="/batches/new"
-        className="block w-full rounded-lg border p-4 font-medium mb-6 text-center"
+        className="block w-full rounded-xl bg-indigo-600 text-white p-4 font-medium mb-6 text-center hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition"
       >
-        Crear lote
+        + Crear lote
       </Link>
 
+      {/* LISTADO LOTES */}
       <section>
-        <h2 className="font-semibold mb-3">Últimos lotes</h2>
+        <h2 className="font-semibold text-slate-700 mb-3">
+          Últimos lotes
+        </h2>
 
         <div className="space-y-3">
           {batches.length === 0 ? (
-            <div className="rounded-lg border p-4 text-sm text-gray-500">
+            <div className="rounded-xl bg-white border border-slate-100 p-4 text-sm text-slate-400 shadow-sm">
               No hay lotes todavía
             </div>
           ) : (
@@ -48,25 +62,37 @@ export default async function DashboardPage() {
               <Link
                 key={batch.id}
                 href={`/batches/${batch.id}`}
-                className="block rounded-lg border p-4 hover:bg-gray-50"
+                className="block rounded-xl bg-white border border-slate-100 p-4 hover:border-indigo-200 hover:shadow-md shadow-sm transition"
               >
-               <div className="font-semibold flex items-center gap-2">
-                 Lote {batch.batchNumber}
-                {batch.printedAt && (
-                <span className="text-blue-600 text-sm">✓</span>
-              )}
-            </div>
-               <div className="text-sm text-gray-600">{batch.name}</div>
-               <div className="text-sm mt-2">{batch._count.qrs} QR</div>
+                <div className="font-semibold text-slate-800 flex items-center gap-2">
+                  Lote {batch.batchNumber}
+                  {batch.printedAt && (
+                    <span className="text-indigo-500 text-sm">✓</span>
+                  )}
+                </div>
+
+                <div className="text-sm text-slate-500">
+                  {batch.name}
+                </div>
+
+                <div className="text-sm mt-2 flex items-center gap-2 text-slate-500">
+                  {batch._count.qrs} QR
+                </div>
               </Link>
             ))
           )}
         </div>
       </section>
 
+      {/* ACCIONES FUTURAS */}
       <div className="mt-8 flex gap-2">
-        <button className="flex-1 rounded-lg border p-3">Compartir</button>
-        <button className="flex-1 rounded-lg border p-3">Imprimir</button>
+        <button className="flex-1 rounded-xl border border-slate-200 p-3 text-slate-500 bg-white shadow-sm">
+          Compartir
+        </button>
+
+        <button className="flex-1 rounded-xl border border-slate-200 p-3 text-slate-500 bg-white shadow-sm">
+          Imprimir
+        </button>
       </div>
     </main>
   );
