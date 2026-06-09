@@ -15,15 +15,20 @@ type Props = {
   params: Promise<{
     id: string;
   }>;
+  searchParams: Promise<{
+    shared?: string;
+  }>;
 };
 
-export default async function BatchPrintPage({ params }: Props) {
+export default async function BatchPrintPage({ params, searchParams }: Props) {
   // ========================================
-  // OBTENER ID DESDE LA URL
+  // OBTENER ID Y PARÁMETROS
   // ========================================
 
   const { id } = await params;
-
+  const { shared } = await searchParams;
+  const isShared = shared === "1";
+  
   // ========================================
   // CONSULTAR LOTE Y SUS QR
   // ========================================
@@ -95,12 +100,14 @@ export default async function BatchPrintPage({ params }: Props) {
       {/* ======================================== */}
 
       <div className="no-print max-w-4xl mx-auto p-4 mb-6">
-        <Link
-          href={`/batches/${batch.id}`}
-          className="text-sm text-indigo-600 hover:text-indigo-700"
-        >
-          ← Volver al lote
-        </Link>
+        {!isShared && (
+          <Link
+            href={`/batches/${batch.id}`}
+            className="text-sm text-indigo-600 hover:text-indigo-700"
+          >
+            ← Volver al lote
+          </Link>
+        )}
 
         <h1 className="text-2xl font-bold mt-4 text-slate-800">
           Vista previa - Lote {batch.batchNumber}

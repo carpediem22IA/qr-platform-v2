@@ -148,7 +148,7 @@ export default async function BatchPage({ params }: Props) {
         <ShareButton
           batchNumber={batch.batchNumber}
           batchName={batch.name}
-          shareUrl={`${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/batches/${batch.id}/print`}
+          shareUrl={`${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/batches/${batch.id}/print?shared=1`}
         />
         <Link
           href={`/batches/${batch.id}/print`}
