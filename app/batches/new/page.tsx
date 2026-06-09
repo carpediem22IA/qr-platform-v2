@@ -9,10 +9,12 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ToastContext";
+import ConfirmModal from "@/components/ConfirmModal";
 
 export default function NewBatchPage() {
   const router = useRouter();
   const toast = useToast();
+  const [showConfirm, setShowConfirm] = useState(false);
 
   // ========================================
   // ESTADO FORMULARIO
@@ -120,23 +122,28 @@ export default function NewBatchPage() {
         </div>
 
         {/* BOTÓN CREAR */}
-                <button
-          type="submit"
+        <button
+          type="button"
           disabled={loading}
-          onClick={(e) => {
-            if (
-              !window.confirm(
-                `¿Crear lote "${name || "Sin nombre"}" con ${quantity} QR?`
-              )
-            ) {
-              e.preventDefault();
-            }
-          }}
+          onClick={() => setShowConfirm(true)}
           className="w-full rounded-xl bg-indigo-600 text-white p-4 font-medium hover:bg-indigo-700 disabled:opacity-50 shadow-sm shadow-indigo-200 transition"
         >
-          {loading ? "Creando..." : "Crear lote"}
+          Crear lote
         </button>
       </form>
+	  <ConfirmModal
+        open={showConfirm}
+        title="Confirmar creación"
+        message={`¿Crear lote "${name || "Sin nombre"}" con ${quantity} QR?`}
+        loading={loading}
+        onConfirm={() => {
+          setShowConfirm(false);
+          // Disparar el submit del formulario
+          const form = document.querySelector("form");
+          form?.requestSubmit();
+        }}
+        onCancel={() => setShowConfirm(false)}
+      />
     </main>
   );
 }
