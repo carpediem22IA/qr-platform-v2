@@ -17,9 +17,9 @@ export default function NewBatchPage() {
   // ========================================
 
   const [name, setName] = useState("");
-  const [quantity, setQuantity] = useState(10);
+  const [quantity, setQuantity] = useState("10");
   const [loading, setLoading] = useState(false);
-  const [qrSize, setQrSize] = useState(30);
+  const [qrSize, setQrSize] = useState("30");
 
     async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -93,7 +93,7 @@ export default function NewBatchPage() {
 
           <input
             value={qrSize}
-            onChange={(e) => setQrSize(Number(e.target.value))}
+            onChange={(e) => setQrSize(e.target.value)}
             type="number"
             min="15"
             max="100"
@@ -109,7 +109,7 @@ export default function NewBatchPage() {
 
           <input
             value={quantity}
-            onChange={(e) => setQuantity(Number(e.target.value))}
+            onChange={(e) => setQuantity(e.target.value)}
             type="number"
             min="1"
             className="w-full border border-slate-200 rounded-xl p-3 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-sm"

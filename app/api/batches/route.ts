@@ -64,7 +64,7 @@ export async function POST(request: Request) {
       data: {
         name,
         batchNumber: nextBatchNumber,
-        qrSizeMm: body.qrSizeMm || 30,
+        qrSizeMm: Number(body.qrSizeMm) || 30,
       },
     });
 	
