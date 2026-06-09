@@ -32,7 +32,7 @@ export default function PrintButton({ batchId }: Props) {
     <button
       onClick={handlePrint}
       disabled={loading}
-      className="bg-black text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800 disabled:opacity-50"
+      className="bg-indigo-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition disabled:opacity-50"
     >
       {loading ? "Preparando..." : "🖨️ Imprimir lote"}
     </button>
