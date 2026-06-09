@@ -8,9 +8,11 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ToastContext";
 
 export default function NewBatchPage() {
   const router = useRouter();
+  const toast = useToast();
 
   // ========================================
   // ESTADO FORMULARIO
@@ -21,7 +23,7 @@ export default function NewBatchPage() {
   const [loading, setLoading] = useState(false);
   const [qrSize, setQrSize] = useState("30");
 
-    async function handleSubmit(event: React.FormEvent) {
+  async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
 
     try {
@@ -34,8 +36,8 @@ export default function NewBatchPage() {
         },
         body: JSON.stringify({
           name,
-          quantity,
-          qrSizeMm: qrSize,
+          quantity: Number(quantity),
+          qrSizeMm: Number(qrSize),
         }),
       });
 
@@ -44,9 +46,10 @@ export default function NewBatchPage() {
         throw new Error(data.error || "Error al crear lote");
       }
 
-      router.push("/dashboard");
+      toast.showToast("Lote creado correctamente", "success");
+      setTimeout(() => router.push("/dashboard"), 500);
     } catch (error: any) {
-      alert(error.message || "Error al crear lote");
+      toast.showToast(error.message || "Error al crear lote", "error");
     } finally {
       setLoading(false);
     }

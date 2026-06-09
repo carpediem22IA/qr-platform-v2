@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ScrollToTop from "@/components/ScrollToTop";
+import { ToastProvider } from "@/components/ToastContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,8 +31,10 @@ export default function RootLayout({
       style={{ colorScheme: "light" }}
     >
       <body className="min-h-full flex flex-col">
-        {children}
-        <ScrollToTop />
+        <ToastProvider>
+          {children}
+          <ScrollToTop />
+        </ToastProvider>
       </body>
     </html>
   );
