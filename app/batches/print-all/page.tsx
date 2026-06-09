@@ -105,7 +105,7 @@ export default async function PrintAllPage() {
               <div className="bg-white p-2 rounded-xl">
                 <QRCodeSVG
                   value={`${baseUrl}/qr/${qr.token}`}
-                  size={Math.round(batch.qrSizeMm * 3.78)}
+                  size={Math.round(qr.batch.qrSizeMm * 3.78)}
                   level="M"
                   includeMargin={true}
                 />
