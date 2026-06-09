@@ -7,6 +7,7 @@ export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import LogoutButton from "@/components/LogoutButton";
 
 export default async function DashboardPage() {
   const batches = await prisma.batch.findMany({
@@ -98,6 +99,9 @@ export default async function DashboardPage() {
         >
           Estadísticas
         </Link>
+      </div>
+	  <div className="mt-8 text-center">
+        <LogoutButton />
       </div>
     </main>
   );
