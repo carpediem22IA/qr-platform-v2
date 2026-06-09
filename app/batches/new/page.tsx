@@ -21,7 +21,7 @@ export default function NewBatchPage() {
   const [loading, setLoading] = useState(false);
   const [qrSize, setQrSize] = useState(30);
 
-  async function handleSubmit(event: React.FormEvent) {
+    async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
 
     try {
@@ -35,22 +35,22 @@ export default function NewBatchPage() {
         body: JSON.stringify({
           name,
           quantity,
-		  qrSizeMm: qrSize,
+          qrSizeMm: qrSize,
         }),
       });
 
       if (!response.ok) {
-        throw new Error();
+        const data = await response.json();
+        throw new Error(data.error || "Error al crear lote");
       }
 
       router.push("/dashboard");
-    } catch {
-      alert("Error al crear lote");
+    } catch (error: any) {
+      alert(error.message || "Error al crear lote");
     } finally {
       setLoading(false);
     }
   }
-
   return (
     <main className="min-h-screen p-4 max-w-md mx-auto">
       {/* VOLVER */}
