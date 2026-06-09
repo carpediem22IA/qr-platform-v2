@@ -28,6 +28,7 @@ export default function RedeemButton({ token }: Props) {
 
       if (res.ok) {
         router.refresh();
+		window.open("/descarga.pdf", "_blank");
       } else {
         const data = await res.json();
         setError(data.error || "Error al canjear");
