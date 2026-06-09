@@ -18,6 +18,8 @@ model Batch {
   printedAt   DateTime?
 
   shareToken  String?  @unique
+  
+  qrSizeMm    Int      @default(30)
 
   qrs         QR[]
 

@@ -19,6 +19,7 @@ export default function NewBatchPage() {
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState(10);
   const [loading, setLoading] = useState(false);
+  const [qrSize, setQrSize] = useState(30);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -34,6 +35,7 @@ export default function NewBatchPage() {
         body: JSON.stringify({
           name,
           quantity,
+		  qrSizeMm: qrSize,
         }),
       });
 
@@ -82,6 +84,22 @@ export default function NewBatchPage() {
             className="w-full border border-slate-200 rounded-xl p-3 bg-white text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-sm"
           />
         </div>
+		
+		{/* TAMAÑO QR */}
+        <div>
+          <label className="block mb-2 text-sm font-medium text-slate-600">
+            Tamaño QR (mm)
+          </label>
+
+          <input
+            value={qrSize}
+            onChange={(e) => setQrSize(Number(e.target.value))}
+            type="number"
+            min="15"
+            max="100"
+            className="w-full border border-slate-200 rounded-xl p-3 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-sm"
+          />
+        </div>
 
         {/* CANTIDAD QR */}
         <div>
@@ -99,9 +117,18 @@ export default function NewBatchPage() {
         </div>
 
         {/* BOTÓN CREAR */}
-        <button
+                <button
           type="submit"
           disabled={loading}
+          onClick={(e) => {
+            if (
+              !window.confirm(
+                `¿Crear lote "${name || "Sin nombre"}" con ${quantity} QR?`
+              )
+            ) {
+              e.preventDefault();
+            }
+          }}
           className="w-full rounded-xl bg-indigo-600 text-white p-4 font-medium hover:bg-indigo-700 disabled:opacity-50 shadow-sm shadow-indigo-200 transition"
         >
           {loading ? "Creando..." : "Crear lote"}

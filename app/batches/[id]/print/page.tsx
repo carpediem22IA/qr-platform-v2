@@ -148,7 +148,7 @@ export default async function BatchPrintPage({ params, searchParams }: Props) {
               <div className="bg-white p-2 rounded-xl">
                 <QRCodeSVG
                   value={`${baseUrl}/qr/${qr.token}`}
-                  size={120}
+                  size={Math.round(batch.qrSizeMm * 3.78)}
                   level="M"
                   includeMargin={true}
                 />

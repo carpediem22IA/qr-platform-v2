@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "batches" ADD COLUMN     "qrSizeMm" INTEGER NOT NULL DEFAULT 30;
