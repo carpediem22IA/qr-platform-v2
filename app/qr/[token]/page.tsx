@@ -87,7 +87,7 @@ export default async function QRPage({ params }: Props) {
 		    <p className="text-sm text-slate-400 mt-4">
             ¿No pudiste descargar el contenido?{" "}
             <a
-              href={`mailto:renovacionfemenina@gmail.com?subject=Problema con QR ${qr.qrNumber}&body=Token: ${qr.token}`}
+              href={`mailto:renovacionfemenina@gmail.com?subject=[Este código ya fue utilizado.] Problema con QR ${qr.qrNumber}&body=Token: ${qr.token}`}
               className="text-indigo-600 underline"
             >
               Solicitar soporte
