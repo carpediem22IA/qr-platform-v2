@@ -48,6 +48,15 @@ export default async function QRPage({ params }: Props) {
           <p className="text-slate-500">
             Este código QR no existe en el sistema.
           </p>
+		  <p className="text-sm text-slate-400 mt-4">
+            ¿Necesitas ayuda?{" "}
+            <a
+              href="mailto:renovacionfemenina@gmail.com?subject=QR no encontrado"
+              className="text-indigo-600 underline"
+            >
+              Contactar soporte
+            </a>
+          </p>
         </div>
       </main>
     );
@@ -75,6 +84,15 @@ export default async function QRPage({ params }: Props) {
               <p>Canjeado: {new Date(qr.redeemedAt).toLocaleString()}</p>
             )}
           </div>
+		    <p className="text-sm text-slate-400 mt-4">
+            ¿No pudiste descargar el contenido?{" "}
+            <a
+              href={`mailto:renovacionfemenina@gmail.com?subject=Problema con QR ${qr.qrNumber}&body=Token: ${qr.token}`}
+              className="text-indigo-600 underline"
+            >
+              Solicitar soporte
+            </a>
+          </p>
         </div>
       </main>
     );
@@ -106,6 +124,16 @@ export default async function QRPage({ params }: Props) {
             {qr.token}
           </p>
         </div>
+
+        <p className="text-sm text-slate-400 mb-4">
+          ¿Tienes dudas?{" "}
+          <a
+            href={`mailto:renovacionfemenina@gmail.com?subject=Consulta sobre QR ${qr.qrNumber}&body=Token: ${qr.token}`}
+            className="text-indigo-600 underline"
+          >
+            Contactar soporte
+          </a>
+        </p>
 
         {/* BOTÓN CANJEAR */}
         <RedeemButton token={qr.token} />
