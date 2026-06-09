@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import ShareButton from "@/components/ShareButton";
+import ResetButton from "@/components/ResetButton";
 
 // ========================================
 // DETALLE DE LOTE
@@ -129,11 +130,14 @@ export default async function BatchPage({ params }: Props) {
             </div>
 
             {/* Estado: ACTIVE o USED */}
-            <div className="text-xs mt-1">
+            <div className="text-xs mt-1 flex items-center gap-2">
               {qr.status === "ACTIVE" ? (
                 <span className="text-green-600">● Activo</span>
               ) : (
-                <span className="text-red-600">● Usado</span>
+                <>
+                  <span className="text-red-600">● Usado</span>
+                  <ResetButton token={qr.token} />
+                </>
               )}
             </div>
           </div>
