@@ -23,6 +23,13 @@ export default function Home() {
         >
           Ir al Dashboard
         </Link>
+		<p></p>
+		<Link
+          href="/dashboard/admin"
+          className="inline-block rounded-xl border border-slate-200 text-slate-400 px-6 py-3 font-medium hover:border-red-200 hover:text-red-500 transition mt-3"
+        >
+          Admin
+        </Link>
       </div>
     </main>
   );

@@ -15,6 +15,15 @@ const PROTECTED_API = ["/api/batches"];
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Proteger panel admin con contraseña maestra
+  if (pathname.startsWith("/dashboard/admin")) {
+    const masterSession = request.cookies.get("admin_master_session");
+    if (masterSession?.value !== "authenticated") {
+      return NextResponse.redirect(new URL("/login/admin", request.url));
+    }
+    return NextResponse.next();
+  }
+
   // Verificar si es ruta protegida
   const isProtected =
     PROTECTED.some((route) => pathname.startsWith(route)) ||
