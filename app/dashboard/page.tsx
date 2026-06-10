@@ -68,7 +68,7 @@ export default async function DashboardPage() {
                 <div className="font-semibold text-slate-800 flex items-center gap-2">
                   Lote {batch.batchNumber}
                   {batch.printedAt && (
-                    <span className="text-indigo-500 text-sm">✓</span>
+                    <span className="text-indigo-500 text-xs font-normal ml-1">✓ Impreso</span>
                   )}
                 </div>
 
@@ -78,6 +78,8 @@ export default async function DashboardPage() {
 
                 <div className="text-sm mt-2 flex items-center gap-2 text-slate-500">
                   {batch._count.qrs} QR
+                  <span className="text-slate-400">·</span>
+                  <span>{batch.qrSizeMm || 30}mm</span>
                 </div>
               </Link>
             ))
