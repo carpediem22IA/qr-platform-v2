@@ -30,8 +30,7 @@ function LoginForm() {
       });
 
       if (res.ok) {
-        router.push(redirect);
-        router.refresh();
+        window.location.href = redirect;
       } else {
         setError("Contraseña incorrecta");
       }

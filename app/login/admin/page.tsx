@@ -26,7 +26,7 @@ function LoginMasterForm() {
       });
 
       if (res.ok) {
-        router.push("/dashboard/admin");
+        window.location.href = "/dashboard/admin";
       } else {
         setError("Contraseña incorrecta");
       }
