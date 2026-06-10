@@ -138,7 +138,7 @@ export default async function BatchPrintPage({ params, searchParams }: Props) {
       {/* TARJETAS QR PARA IMPRIMIR */}
       {/* ======================================== */}
 
-      <div className="max-w-4xl mx-auto p-4">
+      <div className="w-full max-w-4xl mx-auto p-4">
         {/* TÍTULO DEL LOTE - VISIBLE EN IMPRESIÓN */}
         <div className="mb-6">
         <h2 className="text-xl font-bold text-slate-800">
@@ -150,13 +150,21 @@ export default async function BatchPrintPage({ params, searchParams }: Props) {
         </div>
 
         {/* CUADRÍCULA DE TARJETAS QR */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div 
+          className="grid gap-4"
+          style={{
+			width: "100%",
+            gridTemplateColumns: `repeat(auto-fill, minmax(${Math.round((batch.qrSizeMm || 30) * 3.78) + 40}px, 1fr))`,
+            justifyContent: "center",
+          }}
+        >
           {batch.qrs.map((qr) => (
             <div
               key={qr.id}
               className="qr-card border-2 border-slate-200 rounded-2xl p-4 flex flex-col items-center bg-white"
             >
-              {/* CÓDIGO QR */}
+            {/* CÓDIGO QR */}
+			<div style={{ display: "flex", justifyContent: "center" }}>
               <div className="bg-white p-2 rounded-xl">
                 <QRCodeSVG
                   value={`${baseUrl}/qr/${qr.token}`}
@@ -165,7 +173,7 @@ export default async function BatchPrintPage({ params, searchParams }: Props) {
                   includeMargin={true}
                 />
               </div>
-
+            </div>
               {/* NÚMERO DE QR */}
               <div className="mt-3 text-center">
                 <div className="font-bold text-sm text-slate-800">
