@@ -68,9 +68,10 @@ export default function DownloadPDFButton({
 
         // Generar QR como data URL
         const dataUrl = await QRCode.toDataURL(url, {
-          width: qrSize * 10,
+          width: qrSize * 3,
           margin: 1,
           color: { dark: "#000000", light: "#ffffff" },
+		  type: "image/jpeg",
         });
 
         // Tarjeta
