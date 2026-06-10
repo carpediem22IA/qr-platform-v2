@@ -26,7 +26,7 @@ export default function Home() {
 		<p></p>
 		<Link
           href="/dashboard/admin"
-          className="inline-block rounded-xl border border-slate-200 text-slate-400 px-6 py-3 font-medium hover:border-red-200 hover:text-red-500 transition mt-3"
+          className="inline-block rounded-xl bg-red-600 text-white px-6 py-3 font-medium hover:bg-red-700 shadow-sm shadow-red-200 transition mt-3"
         >
           Admin
         </Link>

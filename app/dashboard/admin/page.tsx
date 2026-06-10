@@ -73,12 +73,23 @@ export default function AdminPage() {
 
   return (
     <main className="min-h-screen p-4 max-w-md mx-auto">
-      <Link
-        href="/dashboard"
-        className="text-sm text-indigo-600 hover:text-indigo-700"
-      >
-        ← Volver
-      </Link>
+      <div className="flex gap-3 mb-6">
+        <Link
+          href="/dashboard"
+          className="text-sm rounded-xl bg-indigo-600 text-white px-4 py-2 font-medium hover:bg-indigo-700 transition"
+        >
+          Dashboard
+        </Link>
+        <button
+          onClick={async () => {
+            await fetch("/api/auth/logout", { method: "POST" });
+            router.push("/");
+          }}
+          className="text-sm rounded-xl border border-red-200 text-red-500 px-4 py-2 font-medium hover:bg-red-50 transition"
+        >
+          Cerrar sesión
+        </button>
+      </div>
 
       <h1 className="text-2xl font-bold mt-4 mb-6 text-slate-800">
         🔒 Administración
