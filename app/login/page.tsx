@@ -7,6 +7,8 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, Suspense } from "react";
+import Link from "next/link";
+
 
 function LoginForm() {
   const router = useRouter();
@@ -90,6 +92,14 @@ export default function LoginPage() {
           <Suspense fallback={<div>Cargando...</div>}>
             <LoginForm />
           </Suspense>
+          <div className="text-center mt-4">
+            <Link
+              href="/"
+              className="text-sm text-slate-400 hover:text-slate-600"
+            >
+              Cerrar
+            </Link>
+          </div>
         </div>
       </div>
     </main>
