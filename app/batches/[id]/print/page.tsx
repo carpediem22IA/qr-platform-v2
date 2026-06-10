@@ -111,11 +111,11 @@ export default async function BatchPrintPage({ params, searchParams }: Props) {
         )}
 
         <h1 className="text-2xl font-bold mt-4 text-slate-800">
-          Vista previa - Lote {batch.batchNumber}
+          Lote {batch.batchNumber} - {batch.name}
         </h1>
 
         <p className="text-slate-500 mb-4">
-          {batch.name} · {batch.qrs.length} QR
+          {batch.qrs.length} QR · {batch.qrSizeMm || 30} mm · {Math.round((batch.qrSizeMm || 30) * 3.78)} px
         </p>
 
         {/* BOTÓN IMPRIMIR */}
@@ -141,12 +141,11 @@ export default async function BatchPrintPage({ params, searchParams }: Props) {
       <div className="max-w-4xl mx-auto p-4">
         {/* TÍTULO DEL LOTE - VISIBLE EN IMPRESIÓN */}
         <div className="mb-6">
-          <h2 className="text-xl font-bold text-slate-800">
-            Lote {batch.batchNumber} - {batch.name}
+        <h2 className="text-xl font-bold text-slate-800">
+            Lote {batch.batchNumber} - {batch.name} - {new Date(batch.createdAt).toLocaleDateString()}
           </h2>
           <p className="text-sm text-slate-500">
-            {batch.qrs.length} QR ·{" "}
-            {new Date(batch.createdAt).toLocaleDateString()}
+            {batch.qrs.length} QR · {batch.qrSizeMm || 30} mm · {Math.round((batch.qrSizeMm || 30) * 3.78)} px
           </p>
         </div>
 

@@ -49,11 +49,15 @@ export default function DownloadPDFButton({
       let y = margin + 15;
 
       // Título
-      pdf.setFontSize(16);
-      pdf.text(`Lote ${batchNumber} - ${batchName}`, margin, margin + 5);
+      const today = new Date().toLocaleDateString();
+      const px = Math.round(qrSizeMm * 3.78);
+      
+      pdf.setFontSize(14);
+      pdf.text(`Lote ${batchNumber} - ${batchName} - ${today}`, margin, margin + 5);
       pdf.setFontSize(10);
+      pdf.setTextColor(100, 116, 139);
       pdf.text(
-        `${qrs.length} QR · ${new Date().toLocaleDateString()}`,
+        `${qrs.length} QR · ${qrSizeMm} mm · ${px} px`,
         margin,
         margin + 12
       );
