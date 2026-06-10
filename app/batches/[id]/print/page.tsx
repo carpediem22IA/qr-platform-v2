@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { QRCodeSVG } from "qrcode.react";
 import PrintButton from "@/components/PrintButton";
+import DownloadPDFButton from "@/components/DownloadPDFButton";
 
 // ========================================
 // VISTA DE IMPRESIÓN DEL LOTE
@@ -118,7 +119,19 @@ export default async function BatchPrintPage({ params, searchParams }: Props) {
         </p>
 
         {/* BOTÓN IMPRIMIR */}
-        <PrintButton batchId={batch.id} />
+        <div className="flex gap-2">
+          <PrintButton batchId={batch.id} />
+          <DownloadPDFButton
+            batchNumber={batch.batchNumber}
+            batchName={batch.name}
+            qrs={batch.qrs.map((qr) => ({
+              qrNumber: qr.qrNumber,
+              token: qr.token,
+            }))}
+            baseUrl={baseUrl}
+            qrSizeMm={batch.qrSizeMm || 30}
+          />
+        </div>
       </div>
 
       {/* ======================================== */}

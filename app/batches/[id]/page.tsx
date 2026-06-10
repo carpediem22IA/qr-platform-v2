@@ -162,7 +162,7 @@ export default async function BatchPage({ params }: Props) {
           href={`/batches/${batch.id}/print`}
           className="flex-1 rounded-xl bg-indigo-600 text-white p-4 text-center font-medium hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition"
         >
-          🖨️ Imprimir
+          🖨️ Vista impresión
         </Link>
       </div>
     </main>
