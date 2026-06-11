@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import ShareButton from "@/components/ShareButton";
 import ResetButton from "@/components/ResetButton";
 import DeactivateButton from "@/components/DeactivateButton";
+import ScrollToBottom from "@/components/ScrollToBottom";
 
 // ========================================
 // DETALLE DE LOTE
@@ -158,7 +159,7 @@ export default async function BatchPage({ params }: Props) {
       {/* BOTONES DE ACCIÓN */}
       {/* ======================================== */}
 
-      <div className="mt-8 flex gap-2">
+      <div id="batch-actions" className="mt-8 flex gap-2">
         <ShareButton
           batchNumber={batch.batchNumber}
           batchName={batch.name}
@@ -171,6 +172,7 @@ export default async function BatchPage({ params }: Props) {
           🖨️ Vista impresión
         </Link>
       </div>
+	  <ScrollToBottom />
     </main>
   );
 }
