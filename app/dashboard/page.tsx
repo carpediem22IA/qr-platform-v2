@@ -9,6 +9,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import LogoutButton from "@/components/LogoutButton";
 import BatchSearch from "@/components/BatchSearch";
+import ScrollToBottom from "@/components/ScrollToBottom";
 
 export default async function DashboardPage() {
   const batches = await prisma.batch.findMany({
@@ -58,7 +59,7 @@ export default async function DashboardPage() {
       </section>
 
       {/* ACCIONES FUTURAS */}
-      <div className="mt-8 flex gap-2">
+      <div id="dashboard-actions" className="mt-8 flex gap-2">
         <Link
           href="/batches/print-all"
           className="flex-1 rounded-xl bg-indigo-600 text-white p-3 text-center font-medium hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition"
@@ -75,6 +76,7 @@ export default async function DashboardPage() {
 	  <div className="mt-8 text-center">
         <LogoutButton />
       </div>
+	  <ScrollToBottom targetId="dashboard-actions" />
     </main>
   );
 }

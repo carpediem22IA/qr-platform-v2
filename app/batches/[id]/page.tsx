@@ -185,7 +185,7 @@ export default async function BatchPage({ params }: Props) {
           🖨️ Vista impresión
         </Link>
       </div>
-	  <ScrollToBottom />
+	        <ScrollToBottom targetId="batch-actions" />
     </main>
   );
 }
