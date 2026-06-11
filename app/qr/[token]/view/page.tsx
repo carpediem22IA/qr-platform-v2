@@ -103,6 +103,14 @@ export default async function QRViewPage({ params }: Props) {
             </span>
           </div>
         )}
+        {qr.batch.printedAt && (
+          <div className="flex justify-between">
+            <span className="text-sm text-slate-500">Lote impreso</span>
+            <span className="text-sm text-slate-800">
+              {new Date(qr.batch.printedAt).toLocaleString()}
+            </span>
+          </div>
+        )}
       </div>
     </main>
   );
