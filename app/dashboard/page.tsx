@@ -54,7 +54,7 @@ export default async function DashboardPage() {
           Últimos lotes
         </h2>
 
-        <BatchSearch batches={batches} />
+        <BatchSearch batches={batches as any} />
       </section>
 
       {/* ACCIONES FUTURAS */}
