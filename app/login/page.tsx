@@ -32,7 +32,7 @@ function LoginForm() {
       });
 
       if (res.ok) {
-        window.location.href = redirect;
+        window.location.href = "/dashboard";
       } else {
         setError("Contraseña incorrecta");
       }
