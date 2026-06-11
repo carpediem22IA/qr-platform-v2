@@ -119,7 +119,13 @@ export default async function BatchPage({ params }: Props) {
 
       <div className="space-y-2 mt-6">
         {batch.qrs.map((qr) => (
-          <div key={qr.id} className="bg-white rounded-xl border border-slate-100 shadow-sm p-4">
+          <div key={qr.id} className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 relative">
+		    <Link
+              href={`/qr/${qr.token}/view`}
+              className="absolute top-3 right-3 text-xs text-indigo-500 hover:text-indigo-700 font-medium"
+            >
+              Ver
+            </Link>
             {/* Número de QR */}
             <div className="font-medium text-slate-800">
               QR {qr.qrNumber}

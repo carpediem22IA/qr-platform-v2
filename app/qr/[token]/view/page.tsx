@@ -1,0 +1,109 @@
+import Link from "next/link";
+import { prisma } from "@/lib/prisma";
+import { QRCodeSVG } from "qrcode.react";
+
+// ========================================
+// VISTA DETALLE DE UN QR
+// Imagen grande con toda su información
+// ========================================
+
+export const dynamic = "force-dynamic";
+
+type Props = {
+  params: Promise<{ token: string }>;
+};
+
+export default async function QRViewPage({ params }: Props) {
+  const { token } = await params;
+
+  const qr = await prisma.qR.findUnique({
+    where: { token },
+    include: { batch: true },
+  });
+
+  if (!qr) {
+    return (
+      <main className="p-4 text-center text-slate-500">
+        QR no encontrado
+      </main>
+    );
+  }
+
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  const sizePx = Math.round((qr.batch.qrSizeMm || 30) * 3.78);
+
+  return (
+    <main className="min-h-screen p-4 max-w-md mx-auto">
+      <Link
+        href={`/batches/${qr.batchId}`}
+        className="text-sm text-indigo-600 hover:text-indigo-700"
+      >
+        ← Volver al lote
+      </Link>
+
+      <h1 className="text-xl font-bold mt-4 text-slate-800">
+        QR {qr.qrNumber.toString().padStart(4, "0")}
+      </h1>
+
+      {/* IMAGEN QR GRANDE */}
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 mt-6 flex justify-center">
+        <QRCodeSVG
+          value={`${baseUrl}/qr/${qr.token}`}
+          size={sizePx * 2}
+          level="M"
+          includeMargin={true}
+        />
+      </div>
+
+      {/* INFORMACIÓN */}
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 mt-6 space-y-3">
+        <div className="flex justify-between">
+          <span className="text-sm text-slate-500">Número QR</span>
+          <span className="text-sm font-medium text-slate-800">
+            {qr.qrNumber.toString().padStart(4, "0")}
+          </span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-sm text-slate-500">Token</span>
+          <span className="text-sm font-mono text-slate-800">{qr.token}</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-sm text-slate-500">Lote</span>
+          <span className="text-sm text-slate-800">
+            {qr.batch.batchNumber} - {qr.batch.name}
+          </span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-sm text-slate-500">Tamaño</span>
+          <span className="text-sm text-slate-800">
+            {qr.batch.qrSizeMm || 30}mm · {sizePx}px
+          </span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-sm text-slate-500">Estado</span>
+          <span
+            className={`text-sm font-medium ${
+              qr.status === "ACTIVE" ? "text-green-600" : "text-red-600"
+            }`}
+          >
+            {qr.status === "ACTIVE" ? "Activo" : "Usado"}
+          </span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-sm text-slate-500">Creado</span>
+          <span className="text-sm text-slate-800">
+            {new Date(qr.createdAt).toLocaleDateString()}
+          </span>
+        </div>
+        {qr.redeemedAt && (
+          <div className="flex justify-between">
+            <span className="text-sm text-slate-500">Canjeado</span>
+            <span className="text-sm text-slate-800">
+              {new Date(qr.redeemedAt).toLocaleString()}
+            </span>
+          </div>
+        )}
+      </div>
+    </main>
+  );
+}
