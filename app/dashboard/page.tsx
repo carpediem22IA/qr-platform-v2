@@ -8,6 +8,7 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import LogoutButton from "@/components/LogoutButton";
+import BatchSearch from "@/components/BatchSearch";
 
 export default async function DashboardPage() {
   const batches = await prisma.batch.findMany({
@@ -53,38 +54,7 @@ export default async function DashboardPage() {
           Últimos lotes
         </h2>
 
-        <div className="space-y-3">
-          {batches.length === 0 ? (
-            <div className="rounded-xl bg-white border border-slate-100 p-4 text-sm text-slate-400 shadow-sm">
-              No hay lotes todavía
-            </div>
-          ) : (
-            batches.map((batch) => (
-              <Link
-                key={batch.id}
-                href={`/batches/${batch.id}`}
-                className="block rounded-xl bg-white border border-slate-100 p-4 hover:border-indigo-200 hover:shadow-md shadow-sm transition"
-              >
-                <div className="font-semibold text-slate-800 flex items-center gap-2">
-                  Lote {batch.batchNumber}
-                  {batch.printedAt && (
-                    <span className="text-indigo-500 text-xs font-normal ml-1">✓ Impreso</span>
-                  )}
-                </div>
-
-                <div className="text-sm text-slate-500">
-                  {batch.name}
-                </div>
-
-                <div className="text-sm mt-2 flex items-center gap-2 text-slate-500">
-                  {batch._count.qrs} QR
-                  <span className="text-slate-400">·</span>
-                  <span>{batch.qrSizeMm || 30}mm</span>
-                </div>
-              </Link>
-            ))
-          )}
-        </div>
+        <BatchSearch batches={batches} />
       </section>
 
       {/* ACCIONES FUTURAS */}
