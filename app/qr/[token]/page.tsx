@@ -125,7 +125,9 @@ export default async function QRPage({ params }: Props) {
           </p>
         </div>
 
-        <p className="text-sm text-slate-400 mb-4">
+        {/* BOTÓN CANJEAR */}
+        <RedeemButton token={qr.token} />
+		<p className="text-sm text-slate-400 mt-6">
           ¿Tienes dudas?{" "}
           <a
             href={`mailto:renovacionfemenina@gmail.com?subject=Consulta sobre QR ${qr.qrNumber}&body=Token: ${qr.token}`}
@@ -134,9 +136,6 @@ export default async function QRPage({ params }: Props) {
             Contactar soporte
           </a>
         </p>
-
-        {/* BOTÓN CANJEAR */}
-        <RedeemButton token={qr.token} />
       </div>
     </main>
   );
