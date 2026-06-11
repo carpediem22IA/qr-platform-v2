@@ -134,7 +134,7 @@ export default function NewBatchPage() {
 	  <ConfirmModal
         open={showConfirm}
         title="Confirmar creación"
-        message={`¿Crear lote "${name || "Sin nombre"}" con ${quantity} QR?`}
+        message={`¿Crear lote "${name || "Sin nombre"}" con ${quantity} QR de ${qrSize}mm?`}
         loading={loading}
         onConfirm={() => {
           setShowConfirm(false);
@@ -142,7 +142,7 @@ export default function NewBatchPage() {
           const form = document.querySelector("form");
           form?.requestSubmit();
         }}
-        onCancel={() => setShowConfirm(false)}
+        onCancel={() => router.push("/dashboard")}
       />
     </main>
   );
