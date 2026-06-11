@@ -29,7 +29,7 @@ export default function ScrollToBottom({ targetId }: Props) {
   if (!visible) return null;
 
   return (
-    <div className="fixed top-12 right-4 flex flex-col items-center gap-1 z-50">
+    <div className="fixed top-12 right-2 flex flex-col items-center gap-1 z-50">
       <span className="text-[10px] text-indigo-600 bg-indigo-50 rounded-full px-2 py-0.5 font-medium">
         Acciones
       </span>
