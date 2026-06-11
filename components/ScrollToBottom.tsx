@@ -26,7 +26,7 @@ export default function ScrollToBottom() {
   if (!visible) return null;
 
   return (
-    <div className="fixed top-8 right-6 flex flex-col items-center gap-1 z-50">
+    <div className="fixed top-8 right-2 flex flex-col items-center gap-1 z-50">
       <span className="text-[10px] text-indigo-600 bg-indigo-50 rounded-full px-2 py-0.5 font-medium">
         Acciones
       </span>
