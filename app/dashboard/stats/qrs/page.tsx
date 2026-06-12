@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import ScrollToBottom from "@/components/ScrollToBottom";
 
 // ========================================
 // LISTADO DE QR FILTRADO
@@ -79,6 +80,13 @@ export default async function QRsPage({ searchParams }: Props) {
           </Link>
         ))}
       </div>
+	  <div id="qrs-actions" className="mt-8 text-center">
+        <Link href="/dashboard/stats" className="text-sm text-indigo-600 hover:text-indigo-700">
+          ← Volver a Estadísticas
+        </Link>
+      </div>
+
+      <ScrollToBottom targetId="qrs-actions" />
     </main>
   );
 }
