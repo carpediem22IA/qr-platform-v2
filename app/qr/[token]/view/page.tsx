@@ -79,6 +79,20 @@ export default async function QRViewPage({ params }: Props) {
             {qr.batch.qrSizeMm || 30}mm · {sizePx}px
           </span>
         </div>
+		<div className="flex justify-between">
+          <span className="text-sm text-slate-500">Creado</span>
+          <span className="text-sm text-slate-800">
+            {new Date(qr.createdAt).toLocaleDateString("es-ES")}
+          </span>
+        </div>
+        {qr.batch.printedAt && (
+          <div className="flex justify-between">
+            <span className="text-sm text-slate-500">Impreso</span>
+            <span className="text-sm text-slate-800">
+              {new Date(qr.batch.printedAt).toLocaleDateString("es-ES")}
+            </span>
+          </div>
+        )}
         <div className="flex justify-between">
           <span className="text-sm text-slate-500">Estado</span>
           <span
@@ -89,28 +103,15 @@ export default async function QRViewPage({ params }: Props) {
             {qr.status === "ACTIVE" ? "Activo" : "Usado"}
           </span>
         </div>
-        <div className="flex justify-between">
-          <span className="text-sm text-slate-500">Creado</span>
-          <span className="text-sm text-slate-800">
-            {new Date(qr.createdAt).toLocaleDateString()}
-          </span>
-        </div>
-        {qr.redeemedAt && (
+		{qr.redeemedAt && (
           <div className="flex justify-between">
             <span className="text-sm text-slate-500">Canjeado</span>
             <span className="text-sm text-slate-800">
-              {new Date(qr.redeemedAt).toLocaleString()}
+              {new Date(qr.redeemedAt).toLocaleDateString("es-ES")} - {new Date(qr.redeemedAt).toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" })}
             </span>
           </div>
         )}
-        {qr.batch.printedAt && (
-          <div className="flex justify-between">
-            <span className="text-sm text-slate-500">Lote impreso</span>
-            <span className="text-sm text-slate-800">
-              {new Date(qr.batch.printedAt).toLocaleString()}
-            </span>
-          </div>
-        )}
+        
       </div>
     </main>
   );
