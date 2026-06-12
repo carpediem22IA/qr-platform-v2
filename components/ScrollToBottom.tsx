@@ -12,18 +12,25 @@ interface Props {
 }
 
 export default function ScrollToBottom({ targetId }: Props) {
-  const [visible, setVisible] = useState(true);
+  //const [visible, setVisible] = useState(true);
+
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const checkVisibility = () => {
       const el = document.getElementById(targetId);
       if (el) {
         const rect = el.getBoundingClientRect();
-        setVisible(rect.top > window.innerHeight);
+        const isOutOfView = rect.top > window.innerHeight;
+        setVisible(window.scrollY > 300 && isOutOfView);
       }
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    // Verificar después de un pequeño delay para que el DOM esté listo
+    setTimeout(checkVisibility, 100);
+
+    window.addEventListener("scroll", checkVisibility);
+    return () => window.removeEventListener("scroll", checkVisibility);
   }, [targetId]);
 
   if (!visible) return null;
