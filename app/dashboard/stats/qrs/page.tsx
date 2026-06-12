@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import ScrollToBottom from "@/components/ScrollToBottom";
+import BatchQRSearch from "@/components/BatchQRSearch";
 
 // ========================================
 // LISTADO DE QR FILTRADO
@@ -48,38 +49,16 @@ export default async function QRsPage({ searchParams }: Props) {
         {qrs.length} QR encontrados
       </p>
 
-      <div className="space-y-2">
-        {qrs.map((qr) => (
-          <Link
-            key={qr.id}
-            href={`/qr/${qr.token}/view`}
-            className="block bg-white rounded-xl border border-slate-100 shadow-sm p-4 hover:border-indigo-200 transition"
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="font-medium text-slate-800">
-                  QR {qr.qrNumber.toString().padStart(4, "0")}
-                </div>
-                <div className="text-xs text-slate-500 font-mono">
-                  {qr.token}
-                </div>
-                <div className="text-xs text-slate-400 mt-1">
-                  Lote {qr.batch.batchNumber} - {qr.batch.name}
-                </div>
-              </div>
-              <span
-                className={`text-xs px-2 py-1 rounded-full ${
-                  qr.status === "ACTIVE"
-                    ? "bg-green-100 text-green-700"
-                    : "bg-red-100 text-red-700"
-                }`}
-              >
-                {qr.status === "ACTIVE" ? "Activo" : "Usado"}
-              </span>
-            </div>
-          </Link>
-        ))}
-      </div>
+      <BatchQRSearch
+        qrs={qrs.map((qr) => ({
+          qrNumber: qr.qrNumber,
+          token: qr.token,
+          status: qr.status,
+          batchId: qr.batchId,
+        }))}
+        batchId=""
+      />
+	  
 	  <div id="qrs-actions" className="mt-8 text-center">
         <Link href="/dashboard/stats" className="text-sm text-indigo-600 hover:text-indigo-700">
           ← Volver a Estadísticas

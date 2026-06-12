@@ -24,7 +24,7 @@ export default function BatchQRSearch({ qrs, batchId }: Props) {
 
   const filtered = qrs.filter((qr) => {
     const term = search.toLowerCase();
-    if (!term) return false;
+    if (!term) return true;
     return (
       qr.token.toLowerCase().includes(term) ||
       qr.qrNumber.toString().includes(term)
@@ -41,7 +41,7 @@ export default function BatchQRSearch({ qrs, batchId }: Props) {
         className="w-full border border-slate-200 rounded-xl p-3 bg-white text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-sm text-sm"
       />
 
-      {search && (
+      {(
         <div className="mt-3 space-y-2">
           {filtered.length === 0 ? (
             <div className="text-sm text-slate-400 text-center p-2">

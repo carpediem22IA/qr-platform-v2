@@ -4,7 +4,6 @@ import ShareButton from "@/components/ShareButton";
 import ResetButton from "@/components/ResetButton";
 import DeactivateButton from "@/components/DeactivateButton";
 import ScrollToBottom from "@/components/ScrollToBottom";
-import BatchQRSearch from "@/components/BatchQRSearch";
 
 // ========================================
 // DETALLE DE LOTE
@@ -118,18 +117,6 @@ export default async function BatchPage({ params }: Props) {
       {/* ======================================== */}
       {/* LISTADO DE QR DEL LOTE */}
       {/* ======================================== */}
-	  
-	  <div className="mt-6 mb-6">
-        <BatchQRSearch
-          qrs={batch.qrs.map((qr) => ({
-            qrNumber: qr.qrNumber,
-            token: qr.token,
-            status: qr.status,
-            batchId: batch.id,
-          }))}
-          batchId={batch.id}
-        />
-      </div>
 
       <div className="space-y-2 mt-6">
         {batch.qrs.map((qr) => (
