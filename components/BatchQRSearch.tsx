@@ -27,7 +27,7 @@ export default function BatchQRSearch({ qrs, batchId }: Props) {
     if (!term) return true;
     return (
       qr.token.toLowerCase().includes(term) ||
-      qr.qrNumber.toString().includes(term)
+      qr.qrNumber.toString().padStart(4, "0").includes(term)
     );
   });
 
