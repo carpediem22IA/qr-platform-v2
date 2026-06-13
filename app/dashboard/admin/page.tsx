@@ -26,11 +26,12 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [message, setMessage] = useState("");
+  const [maintenance, setMaintenance] = useState(false);
   const [modal, setModal] = useState<{
     open: boolean;
     title: string;
     message: string;
-	confirmText?: string;
+    confirmText?: string;
     onConfirm: () => void;
   }>({ open: false, title: "", message: "", onConfirm: () => {} });
 
@@ -42,6 +43,13 @@ export default function AdminPage() {
         setBatches(data);
         setLoading(false);
       });
+  }, []);
+
+  // Cargar estado de mantenimiento
+  useEffect(() => {
+    fetch("/api/admin/maintenance")
+      .then((r) => r.json())
+      .then((d) => setMaintenance(d.maintenance));
   }, []);
 
   // Estadísticas
@@ -61,7 +69,7 @@ export default function AdminPage() {
       open: true,
       title: "Resetear lote",
       message: `¿Resetear todos los QR del lote ${batchNumber} a estado ACTIVO?`,
-	  confirmText: "✓ Resetear",
+      confirmText: "✓ Resetear",
       onConfirm: async () => {
         closeModal();
         setActionLoading(`reset-${batchNumber}`);
@@ -78,7 +86,7 @@ export default function AdminPage() {
       open: true,
       title: "Desactivar lote",
       message: `¿Desactivar todos los QR ACTIVOS del lote ${batchNumber}?`,
-	  confirmText: "✓ Desactivar",
+      confirmText: "✓ Desactivar",
       onConfirm: async () => {
         closeModal();
         setActionLoading(`deactivate-${batchNumber}`);
@@ -95,7 +103,7 @@ export default function AdminPage() {
       open: true,
       title: "Eliminar lote",
       message: `¿Eliminar el lote ${batchNumber} y TODOS sus QR? Esta acción no se puede deshacer.`,
-	  confirmText: "🗑 Eliminar",
+      confirmText: "🗑 Eliminar",
       onConfirm: async () => {
         closeModal();
         setActionLoading(`delete-${batchNumber}`);
@@ -112,12 +120,35 @@ export default function AdminPage() {
       open: true,
       title: "⚠️ Vaciar base de datos",
       message: "¿Eliminar TODOS los lotes y QR? Esta acción NO SE PUEDE DESHACER.",
-	  confirmText: "⚠️ Vaciar todo",
+      confirmText: "⚠️ Vaciar todo",
       onConfirm: async () => {
         closeModal();
         await fetch("/api/admin/reset", { method: "POST" });
         setMessage("✅ Base de datos vaciada");
         setTimeout(() => window.location.reload(), 500);
+      },
+    });
+  };
+  
+  // Toggle mantenimiento
+  const handleToggleMaintenance = () => {
+    const newValue = !maintenance;
+    setModal({
+      open: true,
+      title: newValue ? "⚠️ Activar mantenimiento" : "✅ Desactivar mantenimiento",
+      message: newValue
+        ? "¿Activar el modo mantenimiento? Los clientes no podrán canjear QR."
+        : "¿Desactivar el modo mantenimiento? Los clientes podrán volver a canjear QR.",
+      confirmText: newValue ? "⚠️ Activar" : "✓ Desactivar",
+      onConfirm: async () => {
+        closeModal();
+        setMaintenance(newValue);
+        await fetch("/api/admin/maintenance", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ enabled: newValue }),
+        });
+        setMessage(newValue ? "⚠️ Modo mantenimiento ACTIVADO" : "✅ Modo mantenimiento DESACTIVADO");
       },
     });
   };
@@ -161,6 +192,26 @@ export default function AdminPage() {
           {message}
         </div>
       )}
+
+      {/* MODO MANTENIMIENTO */}
+      <div className="bg-white rounded-2xl border border-amber-100 shadow-sm p-4 mb-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="font-medium text-slate-800 text-sm">Modo mantenimiento</div>
+            <div className="text-xs text-slate-500">Bloquea el canje de QR</div>
+          </div>
+          <button
+            onClick={handleToggleMaintenance}
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition ${
+              maintenance
+                ? "bg-amber-600 text-white"
+                : "bg-slate-100 text-slate-600"
+            }`}
+          >
+            {maintenance ? "⚠️ ACTIVO" : "Normal"}
+          </button>
+        </div>
+      </div>
 
       {/* ESTADÍSTICAS */}
       <div className="grid grid-cols-2 gap-3 mb-6">
@@ -219,7 +270,7 @@ export default function AdminPage() {
               </Link>
             </div>
 
-                        <div className="flex gap-2">
+            <div className="flex gap-2">
               {batch.qrs.some((q) => q.status === "USED") && (
                 <button
                   onClick={() => handleResetAll(batch.batchNumber)}

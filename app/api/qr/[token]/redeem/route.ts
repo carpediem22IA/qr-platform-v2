@@ -12,6 +12,14 @@ export async function POST(
   { params }: { params: Promise<{ token: string }> }
 ) {
   const { token } = await params;
+  import { maintenanceMode } from "@/lib/maintenance";
+  
+  if (maintenanceMode) {
+    return NextResponse.json(
+      { error: "Sistema en mantenimiento. Intenta más tarde." },
+      { status: 503 }
+    );
+  }
 
   // Buscar QR por token
   const qr = await prisma.qR.findUnique({
