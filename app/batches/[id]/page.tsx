@@ -1,9 +1,8 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import ShareButton from "@/components/ShareButton";
-import ResetButton from "@/components/ResetButton";
-import DeactivateButton from "@/components/DeactivateButton";
 import ScrollToBottom from "@/components/ScrollToBottom";
+import QRList from "@/components/QRList";
 
 // ========================================
 // DETALLE DE LOTE
@@ -118,42 +117,14 @@ export default async function BatchPage({ params }: Props) {
       {/* LISTADO DE QR DEL LOTE */}
       {/* ======================================== */}
 
-      <div className="space-y-2 mt-6">
-        {batch.qrs.map((qr) => (
-          <div key={qr.id} className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 relative">
-		    <Link
-              href={`/qr/${qr.token}/view`}
-              className="absolute top-3 right-3 text-xs text-indigo-500 hover:text-indigo-700 font-medium"
-            >
-              Ver
-            </Link>
-            {/* Número de QR */}
-            <div className="font-medium text-slate-800">
-              QR {qr.qrNumber}
-            </div>
-
-            {/* Token único */}
-            <div className="text-sm text-slate-500 font-mono">
-              {qr.token}
-            </div>
-
-            {/* Estado: ACTIVE o USED */}
-            <div className="text-xs mt-1 flex items-center gap-2">
-                            {qr.status === "ACTIVE" ? (
-                <>
-                  <span className="text-green-600">● Activo</span>
-                  <DeactivateButton token={qr.token} />
-                </>
-              ) : (
-                <>
-                  <span className="text-red-600">● Usado</span>
-                  <ResetButton token={qr.token} />
-                </>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
+      <QRList
+        qrs={batch.qrs.map((qr) => ({
+          id: qr.id,
+          qrNumber: qr.qrNumber,
+          token: qr.token,
+          status: qr.status,
+        }))}
+      />
 
       {/* ======================================== */}
       {/* BOTONES DE ACCIÓN */}
