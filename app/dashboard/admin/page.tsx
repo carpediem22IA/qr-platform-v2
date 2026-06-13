@@ -30,6 +30,7 @@ export default function AdminPage() {
     open: boolean;
     title: string;
     message: string;
+	confirmText?: string;
     onConfirm: () => void;
   }>({ open: false, title: "", message: "", onConfirm: () => {} });
 
