@@ -49,7 +49,7 @@ export default async function QRViewPage({ params }: Props) {
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 mt-6 flex justify-center">
         <QRCodeSVG
           value={`${baseUrl}/qr/${qr.token}`}
-          size={sizePx * 2}
+          size={Math.min(sizePx * 2, 280)}
           level="M"
           includeMargin={true}
         />
