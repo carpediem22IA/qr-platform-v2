@@ -73,6 +73,7 @@ export default async function AdminBatchPage({ params }: Props) {
           token: qr.token,
           status: qr.status,
         }))}
+		baseUrl={process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}
       />
 
       <div id="batch-actions" className="mt-8">
