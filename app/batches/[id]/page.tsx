@@ -124,6 +124,7 @@ export default async function BatchPage({ params }: Props) {
           token: qr.token,
           status: qr.status,
         }))}
+		baseUrl={process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}
       />
 
       {/* ======================================== */}

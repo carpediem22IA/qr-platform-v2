@@ -9,6 +9,7 @@ import { useState } from "react";
 import Link from "next/link";
 import ResetButton from "./ResetButton";
 import DeactivateButton from "./DeactivateButton";
+import { QRCodeSVG } from "qrcode.react";
 
 interface QRData {
   id: string;
@@ -17,7 +18,7 @@ interface QRData {
   status: string;
 }
 
-export default function QRList({ qrs }: { qrs: QRData[] }) {
+export default function QRList({ qrs, baseUrl }: { qrs: QRData[]; baseUrl: string }) {
   const [search, setSearch] = useState("");
 
   const filtered = qrs.filter((qr) => {
@@ -50,7 +51,7 @@ export default function QRList({ qrs }: { qrs: QRData[] }) {
           filtered.map((qr) => (
             <div
               key={qr.id}
-              className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 relative"
+              className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 relative flex items-center gap-3"
             >
               <Link
                 href={`/qr/${qr.token}/view`}
@@ -58,22 +59,35 @@ export default function QRList({ qrs }: { qrs: QRData[] }) {
               >
                 Ver
               </Link>
-              <div className="font-medium text-slate-800">
-                QR {qr.qrNumber.toString().padStart(4, "0")}
+
+              {/* MINIATURA QR IZQUIERDA */}
+              <div className="flex-shrink-0">
+                <QRCodeSVG
+                  value={`${baseUrl}/qr/${qr.token}`}
+                  size={64}
+                  level="M"
+                  includeMargin={false}
+                />
               </div>
-              <div className="text-sm text-slate-500 font-mono">{qr.token}</div>
-              <div className="text-xs mt-1 flex items-center gap-2">
-                {qr.status === "ACTIVE" ? (
-                  <>
-                    <span className="text-green-600">● Activo</span>
-                    <DeactivateButton token={qr.token} />
-                  </>
-                ) : (
-                  <>
-                    <span className="text-red-600">● Usado</span>
-                    <ResetButton token={qr.token} />
-                  </>
-                )}
+
+              <div className="flex-1 min-w-0">
+                <div className="font-medium text-slate-800">
+                  QR {qr.qrNumber.toString().padStart(4, "0")}
+                </div>
+                <div className="text-sm text-slate-500 font-mono">{qr.token}</div>
+                <div className="text-xs mt-1 flex items-center gap-2">
+                  {qr.status === "ACTIVE" ? (
+                    <>
+                      <span className="text-green-600">● Activo</span>
+                      <DeactivateButton token={qr.token} />
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-red-600">● Usado</span>
+                      <ResetButton token={qr.token} />
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           ))
