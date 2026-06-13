@@ -52,8 +52,11 @@ export default function BatchSearch({ batches }: Props) {
             <Link
               key={batch.id}
               href={`/batches/${batch.id}`}
-              className="block rounded-xl bg-white border border-slate-100 p-4 hover:border-indigo-200 hover:shadow-md shadow-sm transition"
+              className="block rounded-xl bg-white border border-slate-100 p-4 hover:border-indigo-200 hover:shadow-md shadow-sm transition relative"
             >
+              <span className="absolute top-3 right-3 text-[10px] text-indigo-500 font-medium">
+                Detalles
+              </span>
               <div className="font-semibold text-slate-800 flex items-center gap-2">
                 Lote {batch.batchNumber}
                 {batch.printedAt && (
