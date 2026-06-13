@@ -46,12 +46,13 @@ export default async function QRViewPage({ params }: Props) {
       </h1>
 
       {/* IMAGEN QR GRANDE */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 mt-6 flex justify-center">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 mt-6 flex justify-center">
         <QRCodeSVG
           value={`${baseUrl}/qr/${qr.token}`}
           size={Math.min(sizePx * 2, 280)}
           level="M"
           includeMargin={true}
+		  className="max-w-full h-auto"
         />
       </div>
 
