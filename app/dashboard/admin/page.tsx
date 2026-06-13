@@ -1,88 +1,144 @@
 "use client";
 
 // ========================================
-// MENÚ SECRETO - ADMINISTRACIÓN
-// Solo accesible escribiendo la URL
+// PANEL ADMIN MASTER
+// Estadísticas + listado de lotes con acciones
 // ========================================
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import ConfirmModal from "@/components/ConfirmModal";
+
+interface BatchData {
+  id: string;
+  batchNumber: number;
+  name: string;
+  printedAt: string | null;
+  qrSizeMm: number;
+  _count: { qrs: number };
+  qrs: { status: string }[];
+}
 
 export default function AdminPage() {
   const router = useRouter();
-  const [batchNumber, setBatchNumber] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [batches, setBatches] = useState<BatchData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [message, setMessage] = useState("");
+  const [modal, setModal] = useState<{
+    open: boolean;
+    title: string;
+    message: string;
+    onConfirm: () => void;
+  }>({ open: false, title: "", message: "", onConfirm: () => {} });
 
-  // ========================================
-  // VACIAR TODAS LAS TABLAS
-  // ========================================
-
-  const handleResetAll = async () => {
-    if (!window.confirm("¿Eliminar TODOS los lotes y QR? NO SE PUEDE DESHACER")) return;
-    if (!window.confirm("Última oportunidad. ¿Estás SEGURO?")) return;
-
-    setLoading(true);
-    setMessage("");
-
-    try {
-      const res = await fetch("/api/admin/reset", { method: "POST" });
-      if (res.ok) {
-        setMessage("✅ Base de datos vaciada correctamente");
-        router.refresh();
-      } else {
-        setMessage("❌ Error al vaciar la base de datos");
-      }
-    } catch {
-      setMessage("❌ Error de conexión");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // ========================================
-  // ELIMINAR UN LOTE
-  // ========================================
-
-  const handleDeleteBatch = async () => {
-    if (!batchNumber) return;
-    if (!window.confirm(`¿Eliminar lote ${batchNumber} y todos sus QR?`)) return;
-
-    setLoading(true);
-    setMessage("");
-
-    try {
-      const res = await fetch(`/api/admin/batch/${batchNumber}`, {
-        method: "DELETE",
+  // Cargar lotes
+  useEffect(() => {
+    fetch("/api/admin/batches")
+      .then((r) => r.json())
+      .then((data) => {
+        setBatches(data);
+        setLoading(false);
       });
-      if (res.ok) {
-        setMessage(`✅ Lote ${batchNumber} eliminado`);
-        setBatchNumber("");
-        router.refresh();
-      } else {
-        const data = await res.json();
-        setMessage(`❌ ${data.error || "Error al eliminar"}`);
-      }
-    } catch {
-      setMessage("❌ Error de conexión");
-    } finally {
-      setLoading(false);
-    }
+  }, []);
+
+  // Estadísticas
+  const totalBatches = batches.length;
+  const totalQR = batches.reduce((sum, b) => sum + b._count.qrs, 0);
+  const activeQR = batches.reduce(
+    (sum, b) => sum + b.qrs.filter((q) => q.status === "ACTIVE").length,
+    0
+  );
+  const usedQR = totalQR - activeQR;
+
+  const closeModal = () => setModal({ open: false, title: "", message: "", onConfirm: () => {} });
+
+  // Resetear todo el lote
+  const handleResetAll = (batchNumber: number) => {
+    setModal({
+      open: true,
+      title: "Resetear lote",
+      message: `¿Resetear todos los QR del lote ${batchNumber} a estado ACTIVO?`,
+	  confirmText: "✓ Resetear",
+      onConfirm: async () => {
+        closeModal();
+        setActionLoading(`reset-${batchNumber}`);
+        await fetch(`/api/admin/batch/${batchNumber}/reset-all`, { method: "POST" });
+        setMessage(`✅ Lote ${batchNumber} reseteado`);
+        setTimeout(() => window.location.reload(), 500);
+      },
+    });
   };
+
+  // Desactivar todo el lote
+  const handleDeactivateAll = (batchNumber: number) => {
+    setModal({
+      open: true,
+      title: "Desactivar lote",
+      message: `¿Desactivar todos los QR ACTIVOS del lote ${batchNumber}?`,
+	  confirmText: "✓ Desactivar",
+      onConfirm: async () => {
+        closeModal();
+        setActionLoading(`deactivate-${batchNumber}`);
+        await fetch(`/api/admin/batch/${batchNumber}/deactivate-all`, { method: "POST" });
+        setMessage(`✅ Lote ${batchNumber} desactivado`);
+        setTimeout(() => window.location.reload(), 500);
+      },
+    });
+  };
+
+  // Eliminar lote
+  const handleDeleteBatch = (batchNumber: number) => {
+    setModal({
+      open: true,
+      title: "Eliminar lote",
+      message: `¿Eliminar el lote ${batchNumber} y TODOS sus QR? Esta acción no se puede deshacer.`,
+	  confirmText: "🗑 Eliminar",
+      onConfirm: async () => {
+        closeModal();
+        setActionLoading(`delete-${batchNumber}`);
+        await fetch(`/api/admin/batch/${batchNumber}`, { method: "DELETE" });
+        setMessage(`✅ Lote ${batchNumber} eliminado`);
+        setTimeout(() => window.location.reload(), 500);
+      },
+    });
+  };
+
+  // Vaciar base de datos
+  const handleResetAllData = () => {
+    setModal({
+      open: true,
+      title: "⚠️ Vaciar base de datos",
+      message: "¿Eliminar TODOS los lotes y QR? Esta acción NO SE PUEDE DESHACER.",
+	  confirmText: "⚠️ Vaciar todo",
+      onConfirm: async () => {
+        closeModal();
+        await fetch("/api/admin/reset", { method: "POST" });
+        setMessage("✅ Base de datos vaciada");
+        setTimeout(() => window.location.reload(), 500);
+      },
+    });
+  };
+
+  if (loading) {
+    return (
+      <main className="min-h-screen p-4 max-w-md mx-auto">
+        <div className="text-center text-slate-500 mt-20">Cargando...</div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen p-4 max-w-md mx-auto">
+      {/* CABECERA */}
       <div className="flex gap-3 mb-6">
-        <button
-          onClick={async () => {
-            await fetch("/api/auth/logout-master", { method: "POST" });
-            router.push("/dashboard");
-          }}
+        <Link
+          href="/dashboard"
           className="text-sm rounded-xl bg-indigo-600 text-white px-4 py-2 font-medium hover:bg-indigo-700 transition"
         >
           Dashboard
-        </button>
+        </Link>
         <button
           onClick={async () => {
             await fetch("/api/auth/logout", { method: "POST" });
@@ -95,8 +151,8 @@ export default function AdminPage() {
         </button>
       </div>
 
-      <h1 className="text-2xl font-bold mt-4 mb-6 text-slate-800">
-        🔒 Administración
+      <h1 className="text-2xl font-bold mb-6 text-slate-800">
+        🔒 Administración Maestra
       </h1>
 
       {message && (
@@ -105,45 +161,116 @@ export default function AdminPage() {
         </div>
       )}
 
-      {/* ELIMINAR LOTE */}
-      <div className="bg-white rounded-2xl border border-red-100 shadow-sm p-6 mb-6">
-        <h2 className="font-semibold text-red-600 mb-4">
-          Eliminar un lote
-        </h2>
-
-        <div className="flex gap-2">
-          <input
-            type="number"
-            value={batchNumber}
-            onChange={(e) => setBatchNumber(e.target.value)}
-            placeholder="Nº de lote"
-            className="flex-1 border border-slate-200 rounded-xl px-3 py-2 text-sm"
-            min="1"
-          />
-          <button
-            onClick={handleDeleteBatch}
-            disabled={loading || !batchNumber}
-            className="bg-red-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-red-700 disabled:opacity-50"
-          >
-            Eliminar
-          </button>
+      {/* ESTADÍSTICAS */}
+      <div className="grid grid-cols-2 gap-3 mb-6">
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 text-center">
+          <div className="text-3xl font-bold text-indigo-600">{totalBatches}</div>
+          <div className="text-sm text-slate-500 mt-1">Lotes</div>
         </div>
+        <Link
+          href="/dashboard/admin/qrs?filter=all"
+          className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 text-center hover:border-indigo-200 hover:shadow-md transition"
+        >
+          <div className="text-3xl font-bold text-slate-800">{totalQR}</div>
+          <div className="text-sm text-slate-500 mt-1">QR totales</div>
+        </Link>
+        <Link
+          href="/dashboard/admin/qrs?filter=active"
+          className="bg-white rounded-2xl border border-green-100 shadow-sm p-6 text-center hover:border-green-200 hover:shadow-md transition"
+        >
+          <div className="text-3xl font-bold text-green-600">{activeQR}</div>
+          <div className="text-sm text-slate-500 mt-1">Activos</div>
+        </Link>
+        <Link
+          href="/dashboard/admin/qrs?filter=used"
+          className="bg-white rounded-2xl border border-red-100 shadow-sm p-6 text-center hover:border-red-200 hover:shadow-md transition"
+        >
+          <div className="text-3xl font-bold text-red-600">{usedQR}</div>
+          <div className="text-sm text-slate-500 mt-1">Usados</div>
+        </Link>
+      </div>
+
+      {/* LISTADO DE LOTES */}
+      <h2 className="font-semibold text-slate-700 mb-3">Acciones por lote</h2>
+      <div className="space-y-3">
+        {batches.map((batch) => (
+          <div
+            key={batch.id}
+            className="bg-white rounded-xl border border-slate-100 shadow-sm p-4"
+          >
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <div className="font-semibold text-slate-800">
+                  Lote {batch.batchNumber}
+                  {batch.printedAt && (
+                    <span className="text-indigo-500 text-xs ml-1">✓ Impreso</span>
+                  )}
+                </div>
+                <div className="text-sm text-slate-500">
+                  {batch.name} · {batch._count.qrs} QR · {batch.qrSizeMm || 30}mm
+                </div>
+              </div>
+              <Link
+                href={`/dashboard/admin/lote/${batch.id}`}
+                className="text-xs text-indigo-500 hover:text-indigo-700 font-medium"
+              >
+                Ver lote
+              </Link>
+            </div>
+
+                        <div className="flex gap-2">
+              {batch.qrs.some((q) => q.status === "USED") && (
+                <button
+                  onClick={() => handleResetAll(batch.batchNumber)}
+                  disabled={actionLoading === `reset-${batch.batchNumber}`}
+                  className="flex-1 text-xs bg-amber-100 text-amber-700 px-3 py-2 rounded-lg hover:bg-amber-200 disabled:opacity-50"
+                >
+                  {actionLoading === `reset-${batch.batchNumber}` ? "..." : "↺ Reset todo"}
+                </button>
+              )}
+              {batch.qrs.some((q) => q.status === "ACTIVE") && (
+                <button
+                  onClick={() => handleDeactivateAll(batch.batchNumber)}
+                  disabled={actionLoading === `deactivate-${batch.batchNumber}`}
+                  className="flex-1 text-xs bg-red-100 text-red-700 px-3 py-2 rounded-lg hover:bg-red-200 disabled:opacity-50"
+                >
+                  {actionLoading === `deactivate-${batch.batchNumber}` ? "..." : "✕ Desactivar todo"}
+                </button>
+              )}
+              <button
+                onClick={() => handleDeleteBatch(batch.batchNumber)}
+                disabled={actionLoading === `delete-${batch.batchNumber}`}
+                className="flex-1 text-xs bg-red-600 text-white px-3 py-2 rounded-lg hover:bg-red-700 disabled:opacity-50"
+              >
+                {actionLoading === `delete-${batch.batchNumber}` ? "..." : "🗑 Eliminar"}
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* VACIAR TODO */}
-      <div className="bg-white rounded-2xl border border-red-200 shadow-sm p-6">
+      <div className="bg-white rounded-2xl border border-red-200 shadow-sm p-6 mt-6">
         <h2 className="font-semibold text-red-600 mb-4">
           Zona peligrosa
         </h2>
 
         <button
-          onClick={handleResetAll}
-          disabled={loading}
-          className="w-full bg-red-600 text-white p-4 rounded-xl font-medium hover:bg-red-700 disabled:opacity-50"
+          onClick={handleResetAllData}
+          className="w-full bg-red-600 text-white p-4 rounded-xl font-medium hover:bg-red-700"
         >
-          {loading ? "Eliminando..." : "🗑️ Vaciar toda la base de datos"}
+          🗑️ Vaciar toda la base de datos
         </button>
       </div>
+
+      {/* MODAL DE CONFIRMACIÓN */}
+      <ConfirmModal
+        open={modal.open}
+        title={modal.title}
+        message={modal.message}
+        onConfirm={modal.onConfirm}
+        onCancel={closeModal}
+      />
     </main>
   );
 }

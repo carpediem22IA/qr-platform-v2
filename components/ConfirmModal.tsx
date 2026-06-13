@@ -12,6 +12,7 @@ interface Props {
   onConfirm: () => void;
   onCancel: () => void;
   loading?: boolean;
+  confirmText?: string;
 }
 
 export default function ConfirmModal({
@@ -21,6 +22,7 @@ export default function ConfirmModal({
   onConfirm,
   onCancel,
   loading,
+  confirmText,
 }: Props) {
   if (!open) return null;
 
@@ -54,7 +56,7 @@ export default function ConfirmModal({
             disabled={loading}
             className="flex-1 rounded-xl bg-indigo-600 text-white p-3 font-medium hover:bg-indigo-700 disabled:opacity-50 shadow-sm shadow-indigo-200 transition"
           >
-            {loading ? "Creando..." : "✓ Crear lote"}
+            {loading ? "Procesando..." : confirmText || "✓ Confirmar"}
           </button>
         </div>
       </div>
