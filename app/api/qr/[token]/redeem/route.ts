@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { maintenanceMode } from "@/lib/maintenance";
 
 // ========================================
 // API CANJEAR QR
@@ -12,7 +13,6 @@ export async function POST(
   { params }: { params: Promise<{ token: string }> }
 ) {
   const { token } = await params;
-  import { maintenanceMode } from "@/lib/maintenance";
   
   if (maintenanceMode) {
     return NextResponse.json(
