@@ -27,7 +27,10 @@ export default function RedeemButton({ token }: Props) {
       });
 
       if (res.ok) {
-        window.location.href = "/descarga.pdf";
+        router.refresh();
+        setTimeout(() => {
+          window.location.href = "/descarga.pdf";
+        }, 300);
       } else {
         const data = await res.json();
         setError(data.error || "Error al canjear");
