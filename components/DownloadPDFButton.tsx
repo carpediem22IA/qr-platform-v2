@@ -40,10 +40,11 @@ export default function DownloadPDFButton({
       const pageHeight = pdf.internal.pageSize.getHeight();
       const margin = 10;
       const qrSize = qrSizeMm;
+      const cardPadding = 4;
       const cols = 2;
       const spacing = 8;
-      const cardWidth = (pageWidth - margin * 2 - spacing) / cols;
-      const cardHeight = qrSize + 8;
+      const cardWidth = qrSize + cardPadding * 2;
+      const cardHeight = qrSize + cardPadding * 2;
 
       let x = margin;
       let y = margin + 15;
@@ -71,41 +72,45 @@ export default function DownloadPDFButton({
           width: qrSize * 3,
           margin: 1,
           color: { dark: "#000000", light: "#ffffff" },
-		  type: "image/jpeg",
+          type: "image/jpeg",
         });
 
-        // Tarjeta
+        // Posición de la tarjeta
+        const cardX = x + (qrSize + spacing - cardWidth) / 2;
+        const cardY = y + 2;
+
+        // Tarjeta pegada al QR
         pdf.setDrawColor(226, 232, 240);
         pdf.setLineWidth(0.5);
-        pdf.roundedRect(x, y, cardWidth, cardHeight, 3, 3, "S");
+        pdf.roundedRect(cardX, cardY, cardWidth, cardHeight, 2, 2, "S");
 
-        // QR centrado
-        const qrX = x + (cardWidth - qrSize) / 2;
-        const qrY = y + 4;
-        pdf.addImage(dataUrl, "PNG", qrX, qrY, qrSize, qrSize);
+        // QR centrado en la tarjeta
+        const qrX = cardX + cardPadding;
+        const qrY = cardY + cardPadding;
+        pdf.addImage(dataUrl, "JPEG", qrX, qrY, qrSize, qrSize);
 
         // Número QR (fuera de la tarjeta)
         pdf.setFontSize(8);
         pdf.setTextColor(30, 41, 59);
         const qrLabel = `QR ${String(qr.qrNumber).padStart(4, "0")}`;
-        pdf.text(qrLabel, x + cardWidth / 2, y + cardHeight + 4, { align: "center" });
+        pdf.text(qrLabel, cardX + cardWidth / 2, cardY + cardHeight + 4, { align: "center" });
 
         // Token (fuera de la tarjeta)
         pdf.setFontSize(6);
         pdf.setTextColor(148, 163, 184);
-        pdf.text(qr.token, x + cardWidth / 2, y + cardHeight + 10, { align: "center" });
+        pdf.text(qr.token, cardX + cardWidth / 2, cardY + cardHeight + 10, { align: "center" });
 
         // Avanzar posición
         if ((i + 1) % cols === 0) {
           x = margin;
-          y += cardHeight + spacing + 8;
+          y += cardHeight + spacing + 14;
 
           if (y + cardHeight + 14 > pageHeight - margin) {
             pdf.addPage();
             y = margin + 5;
           }
         } else {
-          x += cardWidth + spacing;
+          x += qrSize + spacing;
         }
       }
 
