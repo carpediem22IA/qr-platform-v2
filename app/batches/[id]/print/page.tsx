@@ -22,18 +22,10 @@ type Props = {
 };
 
 export default async function BatchPrintPage({ params, searchParams }: Props) {
-  // ========================================
-  // OBTENER ID Y PARÁMETROS
-  // ========================================
-
   const { id } = await params;
   const { shared } = await searchParams;
   const isShared = shared === "1";
   
-  // ========================================
-  // CONSULTAR LOTE Y SUS QR
-  // ========================================
-
   const batch = await prisma.batch.findUnique({
     where: { id },
     include: {
@@ -43,10 +35,6 @@ export default async function BatchPrintPage({ params, searchParams }: Props) {
     },
   });
 
-  // ========================================
-  // LOTE NO ENCONTRADO
-  // ========================================
-
   if (!batch) {
     return (
       <main className="p-4 text-center text-slate-500">
@@ -55,19 +43,11 @@ export default async function BatchPrintPage({ params, searchParams }: Props) {
     );
   }
 
-  // ========================================
-  // URL BASE PARA EL QR
-  // ========================================
-
   const baseUrl =
     process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
   return (
     <>
-      {/* ======================================== */}
-      {/* ESTILOS DE IMPRESIÓN */}
-      {/* ======================================== */}
-
       <style>
         {`
           @media print {
@@ -93,12 +73,14 @@ export default async function BatchPrintPage({ params, searchParams }: Props) {
               print-color-adjust: exact;
             }
           }
+          @media (max-width: 640px) {
+            .qr-card {
+              transform: scale(0.8);
+              transform-origin: top center;
+            }
+          }
         `}
       </style>
-
-      {/* ======================================== */}
-      {/* CABECERA - NO SE IMPRIME */}
-      {/* ======================================== */}
 
       <div className="no-print max-w-4xl mx-auto p-4 mb-6">
         {!isShared && (
@@ -118,7 +100,6 @@ export default async function BatchPrintPage({ params, searchParams }: Props) {
           {batch.qrs.length} QR · {batch.qrSizeMm || 30} mm · {Math.round((batch.qrSizeMm || 30) * 3.78)} px
         </p>
 
-        {/* BOTÓN IMPRIMIR */}
         <div className="flex gap-2">
           <PrintButton batchId={batch.id} />
           <DownloadPDFButton
@@ -134,14 +115,9 @@ export default async function BatchPrintPage({ params, searchParams }: Props) {
         </div>
       </div>
 
-      {/* ======================================== */}
-      {/* TARJETAS QR PARA IMPRIMIR */}
-      {/* ======================================== */}
-
       <div className="w-full max-w-4xl mx-auto p-4 overflow-hidden">
-        {/* TÍTULO DEL LOTE - VISIBLE EN IMPRESIÓN */}
         <div className="mb-6">
-        <h2 className="text-xl font-bold text-slate-800">
+          <h2 className="text-xl font-bold text-slate-800">
             Lote {batch.batchNumber} - {batch.name} - {new Date(batch.createdAt).toLocaleDateString()}
           </h2>
           <p className="text-sm text-slate-500">
@@ -149,11 +125,10 @@ export default async function BatchPrintPage({ params, searchParams }: Props) {
           </p>
         </div>
 
-        {/* CUADRÍCULA DE TARJETAS QR */}
         <div 
           className="grid gap-4"
           style={{
-			width: "100%",
+            width: "100%",
             gridTemplateColumns: `repeat(auto-fill, minmax(${Math.round((batch.qrSizeMm || 30) * 3.78) + 40}px, 1fr))`,
             justifyContent: "center",
           }}
@@ -162,9 +137,8 @@ export default async function BatchPrintPage({ params, searchParams }: Props) {
             <div
               key={qr.id}
               className="qr-card flex flex-col items-center"
-			  style={{ maxWidth: "100%" }}
+              style={{ maxWidth: "100%" }}
             >
-              {/* TARJETA SOLO CON QR */}
               <div className="border-2 border-slate-200 rounded-2xl p-4 bg-white">
                 <QRCodeSVG
                   value={`${baseUrl}/qr/${qr.token}`}
@@ -180,7 +154,6 @@ export default async function BatchPrintPage({ params, searchParams }: Props) {
                 />
               </div>
 
-              {/* DATOS FUERA DE LA TARJETA */}
               <div className="mt-2 text-center">
                 <div className="font-bold text-xs text-slate-700">
                   QR {qr.qrNumber.toString().padStart(4, "0")}
