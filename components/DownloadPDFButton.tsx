@@ -41,12 +41,17 @@ export default function DownloadPDFButton({
       const margin = 10;
       const qrSize = qrSizeMm;
       const cardPadding = 4;
-      const cols = 2;
       const spacing = 8;
       const cardWidth = qrSize + cardPadding * 2;
       const cardHeight = qrSize + cardPadding * 2;
 
-      let x = margin;
+      // Calcular columnas dinámicamente
+      const availableWidth = pageWidth - margin * 2;
+      const cols = Math.max(1, Math.floor((availableWidth + spacing) / (cardWidth + spacing)));
+      const totalCardsWidth = cardWidth * cols + spacing * (cols - 1);
+      const startX = margin + (availableWidth - totalCardsWidth) / 2;
+
+      let x = startX;
       let y = margin + 15;
 
       // Título
@@ -67,7 +72,6 @@ export default function DownloadPDFButton({
         const qr = qrs[i];
         const url = `${baseUrl}/qr/${qr.token}`;
 
-        // Generar QR como data URL
         const dataUrl = await QRCode.toDataURL(url, {
           width: qrSize * 3,
           margin: 1,
@@ -75,34 +79,28 @@ export default function DownloadPDFButton({
           type: "image/jpeg",
         });
 
-        // Posición de la tarjeta
         const cardX = x;
         const cardY = y + 2;
 
-        // Tarjeta pegada al QR
         pdf.setDrawColor(226, 232, 240);
         pdf.setLineWidth(0.5);
         pdf.roundedRect(cardX, cardY, cardWidth, cardHeight, 2, 2, "S");
 
-        // QR centrado en la tarjeta
         const qrX = cardX + cardPadding;
         const qrY = cardY + cardPadding;
         pdf.addImage(dataUrl, "JPEG", qrX, qrY, qrSize, qrSize);
 
-        // Número QR (fuera de la tarjeta)
         pdf.setFontSize(8);
         pdf.setTextColor(30, 41, 59);
         const qrLabel = `QR ${String(qr.qrNumber).padStart(4, "0")}`;
         pdf.text(qrLabel, cardX + cardWidth / 2, cardY + cardHeight + 4, { align: "center" });
 
-        // Token (fuera de la tarjeta)
         pdf.setFontSize(6);
         pdf.setTextColor(148, 163, 184);
         pdf.text(qr.token, cardX + cardWidth / 2, cardY + cardHeight + 10, { align: "center" });
 
-        // Avanzar posición
         if ((i + 1) % cols === 0) {
-          x = margin;
+          x = startX;
           y += cardHeight + spacing + 14;
 
           if (y + cardHeight + 14 > pageHeight - margin) {
@@ -114,7 +112,6 @@ export default function DownloadPDFButton({
         }
       }
 
-      // Marca en cada página
       const totalPages = pdf.getNumberOfPages();
       for (let i = 1; i <= totalPages; i++) {
         pdf.setPage(i);
