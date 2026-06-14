@@ -76,7 +76,7 @@ export default function DownloadPDFButton({
         });
 
         // Posición de la tarjeta
-        const cardX = x + (qrSize + spacing - cardWidth) / 2;
+        const cardX = x;
         const cardY = y + 2;
 
         // Tarjeta pegada al QR
@@ -110,7 +110,7 @@ export default function DownloadPDFButton({
             y = margin + 5;
           }
         } else {
-          x += qrSize + spacing;
+          x += cardWidth + spacing;
         }
       }
 
