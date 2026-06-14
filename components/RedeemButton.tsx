@@ -28,7 +28,6 @@ export default function RedeemButton({ token }: Props) {
 
       if (res.ok) {
         window.location.href = "/descarga.pdf";
-      }
       } else {
         const data = await res.json();
         setError(data.error || "Error al canjear");
