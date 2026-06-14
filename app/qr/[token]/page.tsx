@@ -37,18 +37,35 @@ export default async function QRPage({ params }: Props) {
   // QR NO ENCONTRADO
   // ========================================
 
-  if (!qr) {
+    if (!qr) {
     return (
       <main className="min-h-screen flex items-center justify-center p-4">
         <div className="text-center max-w-md">
-          <div className="text-4xl mb-4">❓</div>
+          <div className="text-4xl mb-4">✨</div>
           <h1 className="text-2xl font-bold mb-2 text-slate-800">
             QR no encontrado
           </h1>
           <p className="text-slate-500">
-            Este código QR no existe en el sistema.
+            Este código no es válido.
           </p>
-		  <p className="text-sm text-slate-400 mt-4">
+
+          <div className="bg-white rounded-xl border border-purple-100 shadow-sm p-8 mb-6 mt-6 text-center">
+            <p className="text-2xl font-bold mb-2" style={{ color: "#79449d" }}>
+              Oráculo de las Diosas
+            </p>
+            <p className="text-sm mb-2" style={{ color: "#79449d" }}>by</p>
+            <a
+              href="https://renovacionfemenina.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium underline"
+              style={{ color: "#79449d" }}
+            >
+              renovacionfemenina.org
+            </a>
+          </div>
+
+          <p className="text-sm text-slate-400 mt-4">
             ¿Necesitas ayuda?{" "}
             <a
               href="mailto:renovacionfemenina@gmail.com?subject=QR no encontrado"
@@ -66,28 +83,38 @@ export default async function QRPage({ params }: Props) {
   // QR YA USADO
   // ========================================
 
-  if (qr.status === "USED") {
+    if (qr.status === "USED") {
     return (
       <main className="min-h-screen flex items-center justify-center p-4">
         <div className="text-center max-w-md">
-          <div className="text-4xl mb-4">❌</div>
+          <div className="text-4xl mb-4">✨</div>
           <h1 className="text-2xl font-bold mb-2 text-slate-800">
             QR ya canjeado
           </h1>
           <p className="text-slate-500 mb-4">
             Este código ya fue utilizado.
           </p>
-          <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 text-sm text-slate-500">
-            <p>Lote: {qr.batch.name}</p>
-            <p>QR: {qr.qrNumber.toString().padStart(4, "0")}</p>
-            {qr.redeemedAt && (
-              <p>Canjeado: {new Date(qr.redeemedAt).toLocaleString()}</p>
-            )}
-          </div>
-		    <p className="text-sm text-slate-400 mt-4">
-            ¿No pudiste descargar el contenido?{" "}
+
+          <div className="bg-white rounded-xl border border-purple-100 shadow-sm p-8 mb-6 text-center">
+            <p className="text-2xl font-bold mb-2" style={{ color: "#79449d" }}>
+              Oráculo de las Diosas
+            </p>
+            <p className="text-sm mb-2" style={{ color: "#79449d" }}>by</p>
             <a
-              href={`mailto:renovacionfemenina@gmail.com?subject=[Este código ya fue utilizado.] Problema con QR ${qr.qrNumber}&body=Token: ${qr.token}`}
+              href="https://renovacionfemenina.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium underline"
+              style={{ color: "#79449d" }}
+            >
+              renovacionfemenina.org
+            </a>
+          </div>
+
+          <p className="text-sm text-slate-400 mt-4">
+            ¿Necesitas ayuda?{" "}
+            <a
+              href={`mailto:renovacionfemenina@gmail.com?subject=Problema con QR ${qr.qrNumber}&body=Token: ${qr.token}`}
               className="text-indigo-600 underline"
             >
               Solicitar soporte
@@ -113,16 +140,20 @@ export default async function QRPage({ params }: Props) {
           Este código está activo y listo para canjear.
         </p>
 
-        <div className="bg-white rounded-xl border border-green-100 shadow-sm p-4 mb-6 text-sm">
-          <p className="font-medium text-slate-800">
-            Lote: {qr.batch.name}
+        <div className="bg-white rounded-xl border border-purple-100 shadow-sm p-8 mb-6 text-center">
+          <p className="text-2xl font-bold mb-2" style={{ color: "#79449d" }}>
+            Oráculo de las Diosas
           </p>
-          <p className="text-slate-500">
-            QR: {qr.qrNumber.toString().padStart(4, "0")}
-          </p>
-          <p className="text-slate-400 font-mono text-xs">
-            {qr.token}
-          </p>
+          <p className="text-sm mb-2" style={{ color: "#79449d" }}>by</p>
+          <a
+            href="https://renovacionfemenina.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium underline"
+            style={{ color: "#79449d" }}
+          >
+            renovacionfemenina.org
+          </a>
         </div>
 
         {/* BOTÓN CANJEAR */}
