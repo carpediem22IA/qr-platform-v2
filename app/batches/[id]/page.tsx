@@ -65,7 +65,7 @@ export default async function BatchPage({ params }: Props) {
       {/* ======================================== */}
 
       <Link href="/dashboard" className="text-sm text-indigo-600 hover:text-indigo-700">
-        ← Volver
+        ← Volver al dashboard
       </Link>
 
       <h1 className="text-2xl font-bold mt-4 text-slate-800">

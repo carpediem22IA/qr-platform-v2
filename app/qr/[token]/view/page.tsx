@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { QRCodeSVG } from "qrcode.react";
+import BackButton from "@/components/BackButton";
 
 // ========================================
 // VISTA DETALLE DE UN QR
@@ -34,12 +35,8 @@ export default async function QRViewPage({ params }: Props) {
 
   return (
     <main className="min-h-screen p-4 max-w-md mx-auto">
-      <Link
-        href={`/batches/${qr.batchId}`}
-        className="text-sm text-indigo-600 hover:text-indigo-700"
-      >
-        ← Volver al lote
-      </Link>
+	
+      <BackButton />
 
       <h1 className="text-xl font-bold mt-4 text-slate-800">
         QR {qr.qrNumber.toString().padStart(4, "0")}
@@ -52,8 +49,14 @@ export default async function QRViewPage({ params }: Props) {
           size={Math.min(sizePx * 2, 280)}
           level="M"
           includeMargin={true}
-		  className="max-w-full h-auto"
-        />
+          className="max-w-full h-auto"
+		  imageSettings={{
+            src: "/logo.webp",
+            height: Math.round(Math.min(sizePx * 2, 280) * 0.2),
+            width: Math.round(Math.min(sizePx * 2, 280) * 0.2),
+            excavate: true,
+          }}
+       />
       </div>
 
       {/* INFORMACIÓN */}

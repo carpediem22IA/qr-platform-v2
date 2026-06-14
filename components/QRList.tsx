@@ -67,6 +67,12 @@ export default function QRList({ qrs, baseUrl }: { qrs: QRData[]; baseUrl: strin
                   size={64}
                   level="M"
                   includeMargin={false}
+				  imageSettings={{
+                    src: "/logo.webp",
+                    height: 13,
+                    width: 13,
+                    excavate: true,
+                  }}
                 />
               </div>
 

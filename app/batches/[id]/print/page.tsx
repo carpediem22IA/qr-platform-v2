@@ -161,25 +161,30 @@ export default async function BatchPrintPage({ params, searchParams }: Props) {
           {batch.qrs.map((qr) => (
             <div
               key={qr.id}
-              className="qr-card border-2 border-slate-200 rounded-2xl p-4 flex flex-col items-center bg-white"
+              className="qr-card flex flex-col items-center"
             >
-            {/* CÓDIGO QR */}
-			<div style={{ display: "flex", justifyContent: "center" }}>
-              <div className="bg-white p-2 rounded-xl">
+              {/* TARJETA SOLO CON QR */}
+              <div className="border-2 border-slate-200 rounded-2xl p-4 bg-white">
                 <QRCodeSVG
                   value={`${baseUrl}/qr/${qr.token}`}
                   size={Math.round(batch.qrSizeMm * 3.78)}
                   level="M"
-                  includeMargin={true}
+                  includeMargin={false}
+                  imageSettings={{
+                    src: "/logo.webp",
+                    height: Math.round(batch.qrSizeMm * 3.78) * 0.2,
+                    width: Math.round(batch.qrSizeMm * 3.78) * 0.2,
+                    excavate: true,
+                  }}
                 />
               </div>
-            </div>
-              {/* NÚMERO DE QR */}
-              <div className="mt-3 text-center">
-                <div className="font-bold text-sm text-slate-800">
+
+              {/* DATOS FUERA DE LA TARJETA */}
+              <div className="mt-2 text-center">
+                <div className="font-bold text-xs text-slate-700">
                   QR {qr.qrNumber.toString().padStart(4, "0")}
                 </div>
-                <div className="text-xs text-slate-400 font-mono mt-1">
+                <div className="text-[10px] text-slate-400 font-mono">
                   {qr.token}
                 </div>
               </div>

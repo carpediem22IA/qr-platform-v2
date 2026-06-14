@@ -39,7 +39,7 @@ export default async function QRsPage({ searchParams }: Props) {
   return (
     <main className="min-h-screen p-4 max-w-md mx-auto">
       <Link href="/dashboard/stats" className="text-sm text-indigo-600 hover:text-indigo-700">
-        ← Volver
+        ← Volver a Estadísticas
       </Link>
 
       <h1 className="text-2xl font-bold mt-4 mb-2 text-slate-800">

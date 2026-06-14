@@ -55,6 +55,9 @@ export default async function PrintAllPage() {
               -webkit-print-color-adjust: exact;
               print-color-adjust: exact;
             }
+			.print-grid {
+              grid-template-columns: repeat(3, 1fr) !important;
+            }
           }
         `}
       </style>
@@ -96,7 +99,7 @@ export default async function PrintAllPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 print-grid">
           {qrs.map((qr) => (
             <div
               key={qr.id}
@@ -108,6 +111,12 @@ export default async function PrintAllPage() {
                   size={Math.round(qr.batch.qrSizeMm * 3.78)}
                   level="M"
                   includeMargin={true}
+				  imageSettings={{
+                    src: "/logo.webp",
+                    height: Math.round(Math.round(qr.batch.qrSizeMm * 3.78) * 0.2),
+                    width: Math.round(Math.round(qr.batch.qrSizeMm * 3.78) * 0.2),
+                    excavate: true,
+                  }}
                 />
               </div>
 
