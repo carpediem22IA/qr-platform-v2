@@ -43,7 +43,7 @@ export default function DownloadPDFButton({
       const cols = 2;
       const spacing = 8;
       const cardWidth = (pageWidth - margin * 2 - spacing) / cols;
-      const cardHeight = qrSize + 20;
+      const cardHeight = qrSize + 8;
 
       let x = margin;
       let y = margin + 15;
@@ -84,27 +84,23 @@ export default function DownloadPDFButton({
         const qrY = y + 4;
         pdf.addImage(dataUrl, "PNG", qrX, qrY, qrSize, qrSize);
 
-        // Número QR
-        pdf.setFontSize(9);
+        // Número QR (fuera de la tarjeta)
+        pdf.setFontSize(8);
         pdf.setTextColor(30, 41, 59);
         const qrLabel = `QR ${String(qr.qrNumber).padStart(4, "0")}`;
-        pdf.text(qrLabel, x + cardWidth / 2, qrY + qrSize + 8, {
-          align: "center",
-        });
+        pdf.text(qrLabel, x + cardWidth / 2, y + cardHeight + 4, { align: "center" });
 
-        // Token
-        pdf.setFontSize(7);
+        // Token (fuera de la tarjeta)
+        pdf.setFontSize(6);
         pdf.setTextColor(148, 163, 184);
-        pdf.text(qr.token, x + cardWidth / 2, qrY + qrSize + 14, {
-          align: "center",
-        });
+        pdf.text(qr.token, x + cardWidth / 2, y + cardHeight + 10, { align: "center" });
 
         // Avanzar posición
         if ((i + 1) % cols === 0) {
           x = margin;
-          y += cardHeight + spacing;
+          y += cardHeight + spacing + 8;
 
-          if (y + cardHeight > pageHeight - margin) {
+          if (y + cardHeight + 14 > pageHeight - margin) {
             pdf.addPage();
             y = margin + 5;
           }
