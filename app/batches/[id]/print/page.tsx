@@ -138,7 +138,7 @@ export default async function BatchPrintPage({ params, searchParams }: Props) {
       {/* TARJETAS QR PARA IMPRIMIR */}
       {/* ======================================== */}
 
-      <div className="w-full max-w-4xl mx-auto p-4">
+      <div className="w-full max-w-4xl mx-auto p-4 overflow-hidden">
         {/* TÍTULO DEL LOTE - VISIBLE EN IMPRESIÓN */}
         <div className="mb-6">
         <h2 className="text-xl font-bold text-slate-800">
@@ -162,6 +162,7 @@ export default async function BatchPrintPage({ params, searchParams }: Props) {
             <div
               key={qr.id}
               className="qr-card flex flex-col items-center"
+			  style={{ maxWidth: "100%" }}
             >
               {/* TARJETA SOLO CON QR */}
               <div className="border-2 border-slate-200 rounded-2xl p-4 bg-white">
