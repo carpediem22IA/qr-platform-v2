@@ -37,34 +37,34 @@ export default async function QRPage({ params }: Props) {
   // QR NO ENCONTRADO
   // ========================================
 
-    if (!qr) {
+  if (!qr) {
     return (
       <main className="min-h-screen flex items-center justify-center p-4">
         <div className="text-center max-w-md">
           <div className="text-xl font-bold mb-2 text-slate-800">✨ QR no encontrado</div>
-          <p className="text-slate-500">
+          <p className="text-slate-500 text-sm">
             Este código no es válido.
           </p>
 
-          <div className="bg-white rounded-xl border border-purple-100 shadow-sm p-8 mb-6 mt-6 text-center">
+          <div className="bg-white rounded-xl border border-purple-100 shadow-sm p-4 mb-4 mt-4 text-center">
             <img
               src="/producto.jpg"
               alt="Las once Triadas del Oráculo de las Diosas"
-              className="max-w-[200px] mx-auto mb-2 rounded-xl"
+              className="max-w-[140px] mx-auto mb-1 rounded-xl"
             />
-            <p className="text-sm mb-2" style={{ color: "#79449d" }}>by</p>
+            <p className="text-xs mb-1" style={{ color: "#79449d" }}>by</p>
             <a
               href="https://renovacionfemenina.org"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium underline"
+              className="font-medium underline text-xs"
               style={{ color: "#79449d" }}
             >
               renovacionfemenina.org
             </a>
           </div>
 
-          <p className="text-sm text-slate-400 mt-4">
+          <p className="text-xs text-slate-400 mt-3">
             ¿Necesitas ayuda?{" "}
             <a
               href="mailto:renovacionfemenina@gmail.com?subject=QR no encontrado"
@@ -82,34 +82,34 @@ export default async function QRPage({ params }: Props) {
   // QR YA USADO
   // ========================================
 
-    if (qr.status === "USED") {
+  if (qr.status === "USED") {
     return (
       <main className="min-h-screen flex items-center justify-center p-4">
         <div className="text-center max-w-md">
           <div className="text-xl font-bold mb-2 text-slate-800">✨ QR ya canjeado</div>
-          <p className="text-slate-500 mb-4">
+          <p className="text-slate-500 text-sm mb-3">
             Este código ya fue utilizado.
           </p>
 
-          <div className="bg-white rounded-xl border border-purple-100 shadow-sm p-8 mb-6 text-center">
+          <div className="bg-white rounded-xl border border-purple-100 shadow-sm p-4 mb-4 text-center">
             <img
               src="/producto.jpg"
               alt="Las once Triadas del Oráculo de las Diosas"
-              className="max-w-[200px] mx-auto mb-2 rounded-xl"
+              className="max-w-[140px] mx-auto mb-1 rounded-xl"
             />
-            <p className="text-sm mb-2" style={{ color: "#79449d" }}>by</p>
+            <p className="text-xs mb-1" style={{ color: "#79449d" }}>by</p>
             <a
               href="https://renovacionfemenina.org"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium underline"
+              className="font-medium underline text-xs"
               style={{ color: "#79449d" }}
             >
               renovacionfemenina.org
             </a>
           </div>
 
-          <p className="text-sm text-slate-400 mt-4">
+          <p className="text-xs text-slate-400 mt-3">
             ¿Necesitas ayuda?{" "}
             <a
               href={`mailto:renovacionfemenina@gmail.com?subject=Problema con QR ${qr.qrNumber}&body=Token: ${qr.token}`}
@@ -131,22 +131,22 @@ export default async function QRPage({ params }: Props) {
     <main className="min-h-screen flex items-center justify-center p-4">
       <div className="text-center max-w-md">
         <div className="text-xl font-bold mb-2 text-slate-800">✅ QR Válido</div>
-        <p className="text-slate-500 mb-6">
+        <p className="text-slate-500 text-sm mb-4">
           Este código está activo y listo para canjear.
         </p>
 
-        <div className="bg-white rounded-xl border border-purple-100 shadow-sm p-8 mb-6 text-center">
-            <img
-              src="/producto.jpg"
-              alt="Las once Triadas del Oráculo de las Diosas"
-              className="max-w-[200px] mx-auto mb-2 rounded-xl"
-            />
-          <p className="text-sm mb-2" style={{ color: "#79449d" }}>by</p>
+        <div className="bg-white rounded-xl border border-purple-100 shadow-sm p-4 mb-4 text-center">
+          <img
+            src="/producto.jpg"
+            alt="Las once Triadas del Oráculo de las Diosas"
+            className="max-w-[140px] mx-auto mb-1 rounded-xl"
+          />
+          <p className="text-xs mb-1" style={{ color: "#79449d" }}>by</p>
           <a
             href="https://renovacionfemenina.org"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-medium underline"
+            className="font-medium underline text-xs"
             style={{ color: "#79449d" }}
           >
             renovacionfemenina.org
@@ -155,7 +155,7 @@ export default async function QRPage({ params }: Props) {
 
         {/* BOTÓN CANJEAR */}
         <RedeemButton token={qr.token} />
-		<p className="text-sm text-slate-400 mt-6">
+        <p className="text-xs text-slate-400 mt-3">
           ¿Tienes dudas?{" "}
           <a
             href={`mailto:renovacionfemenina@gmail.com?subject=Consulta sobre QR ${qr.qrNumber}&body=Token: ${qr.token}`}
