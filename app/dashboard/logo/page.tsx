@@ -99,8 +99,10 @@ export default function LogoPage() {
           accept="image/png,image/jpeg,image/webp"
           onChange={handleFileChange}
           className="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-medium file:bg-indigo-50 file:text-indigo-600 hover:file:bg-indigo-100"
-          style={{ wordBreak: "break-all" }}
         />
+		<p className="text-xs text-slate-400 mt-2 break-all">
+          {file ? file.name : "Ningún archivo seleccionado"}
+        </p>
       </div>
 
       {/* VISTA PREVIA */}
@@ -127,6 +129,15 @@ export default function LogoPage() {
           {loading ? "Subiendo..." : "📤 Subir logo"}
         </button>
       )}
+	  
+	  <style>
+        {`
+          input[type="file"] {
+            color: transparent;
+          }
+        `}
+      </style>
+	  
     </main>
   );
 }
