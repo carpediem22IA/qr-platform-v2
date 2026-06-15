@@ -50,9 +50,11 @@ export default async function QRPage({ params }: Props) {
           </p>
 
           <div className="bg-white rounded-xl border border-purple-100 shadow-sm p-8 mb-6 mt-6 text-center">
-            <p className="text-2xl font-bold mb-2" style={{ color: "#79449d" }}>
-              Las once Triadas del Oráculo de las Diosas
-            </p>
+            <img
+              src="/producto.jpg"
+              alt="Las once Triadas del Oráculo de las Diosas"
+              className="max-w-[200px] mx-auto mb-2 rounded-xl"
+            />
             <p className="text-sm mb-2" style={{ color: "#79449d" }}>by</p>
             <a
               href="https://renovacionfemenina.org"
@@ -96,9 +98,11 @@ export default async function QRPage({ params }: Props) {
           </p>
 
           <div className="bg-white rounded-xl border border-purple-100 shadow-sm p-8 mb-6 text-center">
-            <p className="text-2xl font-bold mb-2" style={{ color: "#79449d" }}>
-              Las once Triadas del Oráculo de las Diosas
-            </p>
+            <img
+              src="/producto.jpg"
+              alt="Las once Triadas del Oráculo de las Diosas"
+              className="max-w-[200px] mx-auto mb-2 rounded-xl"
+            />
             <p className="text-sm mb-2" style={{ color: "#79449d" }}>by</p>
             <a
               href="https://renovacionfemenina.org"
@@ -141,9 +145,11 @@ export default async function QRPage({ params }: Props) {
         </p>
 
         <div className="bg-white rounded-xl border border-purple-100 shadow-sm p-8 mb-6 text-center">
-          <p className="text-2xl font-bold mb-2" style={{ color: "#79449d" }}>
-            Las once Triadas del Oráculo de las Diosas
-          </p>
+            <img
+              src="/producto.jpg"
+              alt="Las once Triadas del Oráculo de las Diosas"
+              className="max-w-[200px] mx-auto mb-2 rounded-xl"
+            />
           <p className="text-sm mb-2" style={{ color: "#79449d" }}>by</p>
           <a
             href="https://renovacionfemenina.org"
