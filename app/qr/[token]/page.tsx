@@ -29,7 +29,7 @@ export default async function QRPage({ params }: Props) {
 
   if (!qr) {
     return (
-      <main className="min-h-screen flex items-center justify-center p-4">
+      <main className="min-h-dvh flex items-start justify-center p-4 pt-8">
         <div className="text-center max-w-md">
           <div className="text-xl font-bold mb-2 text-slate-800">✨ QR no encontrado</div>
           <p className="text-slate-500 text-sm">Este código no es válido.</p>
@@ -72,7 +72,7 @@ export default async function QRPage({ params }: Props) {
 
   if (qr.status === "USED") {
     return (
-      <main className="min-h-screen flex items-center justify-center p-4">
+      <main className="min-h-dvh flex items-start justify-center p-4 pt-8">
         <div className="text-center max-w-md">
           <div className="text-xl font-bold mb-2 text-slate-800">✨ QR ya canjeado</div>
           <p className="text-slate-500 text-sm mb-3">Este código ya fue utilizado.</p>
@@ -114,7 +114,7 @@ export default async function QRPage({ params }: Props) {
   // ========================================
 
   return (
-    <main className="min-h-screen flex items-center justify-center p-4">
+    <main className="min-h-dvh flex items-start justify-center p-4 pt-8">
       <div className="text-center max-w-md">
         <div className="text-xl font-bold mb-2 text-slate-800">✅ QR Válido</div>
         <p className="text-slate-500 text-sm mb-4">Este código está activo y listo para canjear.</p>
