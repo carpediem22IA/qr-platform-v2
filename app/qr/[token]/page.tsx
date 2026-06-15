@@ -16,21 +16,11 @@ type Props = {
 };
 
 export default async function QRPage({ params }: Props) {
-  // ========================================
-  // OBTENER TOKEN DESDE LA URL
-  // ========================================
-
   const { token } = await params;
-
-  // ========================================
-  // BUSCAR QR POR TOKEN
-  // ========================================
 
   const qr = await prisma.qR.findUnique({
     where: { token },
-    include: {
-      batch: true,
-    },
+    include: { batch: true },
   });
 
   // ========================================
@@ -42,15 +32,13 @@ export default async function QRPage({ params }: Props) {
       <main className="min-h-screen flex items-center justify-center p-4">
         <div className="text-center max-w-md">
           <div className="text-xl font-bold mb-2 text-slate-800">✨ QR no encontrado</div>
-          <p className="text-slate-500 text-sm">
-            Este código no es válido.
-          </p>
+          <p className="text-slate-500 text-sm">Este código no es válido.</p>
 
-          <div className="bg-white rounded-xl border border-purple-100 shadow-sm p-4 mb-4 mt-4 text-center">
+          <div className="bg-white rounded-xl border border-purple-100 shadow-sm p-5 mb-4 mt-4 text-center">
             <img
               src="/producto.jpg"
               alt="Las once Triadas del Oráculo de las Diosas"
-              className="max-w-[140px] mx-auto mb-1 rounded-xl"
+              className="max-w-[170px] mx-auto mb-1 rounded-xl"
             />
             <p className="text-xs mb-1" style={{ color: "#79449d" }}>by</p>
             <a
@@ -87,15 +75,13 @@ export default async function QRPage({ params }: Props) {
       <main className="min-h-screen flex items-center justify-center p-4">
         <div className="text-center max-w-md">
           <div className="text-xl font-bold mb-2 text-slate-800">✨ QR ya canjeado</div>
-          <p className="text-slate-500 text-sm mb-3">
-            Este código ya fue utilizado.
-          </p>
+          <p className="text-slate-500 text-sm mb-3">Este código ya fue utilizado.</p>
 
-          <div className="bg-white rounded-xl border border-purple-100 shadow-sm p-4 mb-4 text-center">
+          <div className="bg-white rounded-xl border border-purple-100 shadow-sm p-5 mb-4 text-center">
             <img
               src="/producto.jpg"
               alt="Las once Triadas del Oráculo de las Diosas"
-              className="max-w-[140px] mx-auto mb-1 rounded-xl"
+              className="max-w-[170px] mx-auto mb-1 rounded-xl"
             />
             <p className="text-xs mb-1" style={{ color: "#79449d" }}>by</p>
             <a
@@ -131,15 +117,13 @@ export default async function QRPage({ params }: Props) {
     <main className="min-h-screen flex items-center justify-center p-4">
       <div className="text-center max-w-md">
         <div className="text-xl font-bold mb-2 text-slate-800">✅ QR Válido</div>
-        <p className="text-slate-500 text-sm mb-4">
-          Este código está activo y listo para canjear.
-        </p>
+        <p className="text-slate-500 text-sm mb-4">Este código está activo y listo para canjear.</p>
 
-        <div className="bg-white rounded-xl border border-purple-100 shadow-sm p-4 mb-4 text-center">
+        <div className="bg-white rounded-xl border border-purple-100 shadow-sm p-5 mb-4 text-center">
           <img
             src="/producto.jpg"
             alt="Las once Triadas del Oráculo de las Diosas"
-            className="max-w-[140px] mx-auto mb-1 rounded-xl"
+            className="max-w-[170px] mx-auto mb-1 rounded-xl"
           />
           <p className="text-xs mb-1" style={{ color: "#79449d" }}>by</p>
           <a
@@ -153,7 +137,6 @@ export default async function QRPage({ params }: Props) {
           </a>
         </div>
 
-        {/* BOTÓN CANJEAR */}
         <RedeemButton token={qr.token} />
         <p className="text-xs text-slate-400 mt-3">
           ¿Tienes dudas?{" "}
