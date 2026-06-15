@@ -136,10 +136,7 @@ export default async function QRPage({ params }: Props) {
   return (
     <main className="min-h-screen flex items-center justify-center p-4">
       <div className="text-center max-w-md">
-        <div className="text-4xl mb-4">✅</div>
-        <h1 className="text-2xl font-bold mb-2 text-slate-800">
-          QR Válido
-        </h1>
+        <div className="text-xl font-bold mb-2 text-slate-800">✅ QR Válido</div>
         <p className="text-slate-500 mb-6">
           Este código está activo y listo para canjear.
         </p>
