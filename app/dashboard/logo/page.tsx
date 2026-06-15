@@ -98,7 +98,8 @@ export default function LogoPage() {
           type="file"
           accept="image/png,image/jpeg,image/webp"
           onChange={handleFileChange}
-          className="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-medium file:bg-indigo-50 file:text-indigo-600 hover:file:bg-indigo-100 truncate"
+          className="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-medium file:bg-indigo-50 file:text-indigo-600 hover:file:bg-indigo-100"
+          style={{ wordBreak: "break-all" }}
         />
       </div>
 
