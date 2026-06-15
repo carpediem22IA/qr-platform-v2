@@ -119,15 +119,27 @@ export default function LogoPage() {
         </div>
       )}
 
-      {/* BOTÓN SUBIR */}
+      {/* BOTONES SUBIR / CANCELAR */}
       {file && (
-        <button
-          onClick={handleUpload}
-          disabled={loading}
-          className="w-full rounded-xl bg-indigo-600 text-white p-4 font-medium hover:bg-indigo-700 disabled:opacity-50 shadow-sm shadow-indigo-200 transition"
-        >
-          {loading ? "Subiendo..." : "📤 Subir logo"}
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={handleUpload}
+            disabled={loading}
+            className="flex-1 rounded-xl bg-indigo-600 text-white p-4 font-medium hover:bg-indigo-700 disabled:opacity-50 shadow-sm shadow-indigo-200 transition"
+          >
+            {loading ? "Subiendo..." : "📤 Subir logo"}
+          </button>
+          <button
+            onClick={() => {
+              setFile(null);
+              setPreview(null);
+            }}
+            disabled={loading}
+            className="rounded-xl border border-slate-200 text-slate-500 p-4 font-medium hover:bg-slate-50 transition"
+          >
+            Cancelar
+          </button>
+        </div>
       )}
 	  
 	  <style>
