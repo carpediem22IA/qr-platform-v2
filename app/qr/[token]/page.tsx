@@ -51,7 +51,7 @@ export default async function QRPage({ params }: Props) {
 
           <div className="bg-white rounded-xl border border-purple-100 shadow-sm p-8 mb-6 mt-6 text-center">
             <p className="text-2xl font-bold mb-2" style={{ color: "#79449d" }}>
-              Oráculo de las Diosas
+              Las once Triadas del Oráculo de las Diosas
             </p>
             <p className="text-sm mb-2" style={{ color: "#79449d" }}>by</p>
             <a
@@ -97,7 +97,7 @@ export default async function QRPage({ params }: Props) {
 
           <div className="bg-white rounded-xl border border-purple-100 shadow-sm p-8 mb-6 text-center">
             <p className="text-2xl font-bold mb-2" style={{ color: "#79449d" }}>
-              Oráculo de las Diosas
+              Las once Triadas del Oráculo de las Diosas
             </p>
             <p className="text-sm mb-2" style={{ color: "#79449d" }}>by</p>
             <a
@@ -142,7 +142,7 @@ export default async function QRPage({ params }: Props) {
 
         <div className="bg-white rounded-xl border border-purple-100 shadow-sm p-8 mb-6 text-center">
           <p className="text-2xl font-bold mb-2" style={{ color: "#79449d" }}>
-            Oráculo de las Diosas
+            Las once Triadas del Oráculo de las Diosas
           </p>
           <p className="text-sm mb-2" style={{ color: "#79449d" }}>by</p>
           <a
