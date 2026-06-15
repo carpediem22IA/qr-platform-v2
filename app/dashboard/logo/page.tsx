@@ -5,12 +5,13 @@
 // Permite subir una imagen y previsualizarla
 // ========================================
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function LogoPage() {
   const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -55,6 +56,7 @@ export default function LogoPage() {
         setMessage("✅ Logo actualizado correctamente");
         setFile(null);
         setPreview(null);
+        if (fileInputRef.current) fileInputRef.current.value = "";
         router.refresh();
       } else {
         setMessage(`❌ ${data.error || "Error al subir"}`);
@@ -95,12 +97,13 @@ export default function LogoPage() {
 
         {/* INPUT DE ARCHIVO */}
         <input
+          ref={fileInputRef}
           type="file"
           accept="image/png,image/jpeg,image/webp"
           onChange={handleFileChange}
           className="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-medium file:bg-indigo-50 file:text-indigo-600 hover:file:bg-indigo-100"
         />
-		<p className="text-xs text-slate-400 mt-2 break-all">
+        <p className="text-xs text-slate-400 mt-2 break-all">
           {file ? file.name : "Ningún archivo seleccionado"}
         </p>
       </div>
@@ -133,6 +136,7 @@ export default function LogoPage() {
             onClick={() => {
               setFile(null);
               setPreview(null);
+              if (fileInputRef.current) fileInputRef.current.value = "";
             }}
             disabled={loading}
             className="rounded-xl border border-slate-200 text-slate-500 p-4 font-medium hover:bg-slate-50 transition"
@@ -141,15 +145,14 @@ export default function LogoPage() {
           </button>
         </div>
       )}
-	  
-	  <style>
+
+      <style>
         {`
           input[type="file"] {
             color: transparent;
           }
         `}
       </style>
-	  
     </main>
   );
 }
