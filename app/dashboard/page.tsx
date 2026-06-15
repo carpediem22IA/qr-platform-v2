@@ -66,11 +66,12 @@ export default async function DashboardPage() {
         >
           Estadísticas
         </Link>
-        <button
+        <Link
+          href="/dashboard/logo"
           className="flex-1 rounded-xl bg-indigo-600 text-white p-3 text-center font-medium hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition"
         >
           Logo QR
-        </button>
+        </Link>
       </div>
 	  <div className="mt-8 text-center">
         <LogoutButton />

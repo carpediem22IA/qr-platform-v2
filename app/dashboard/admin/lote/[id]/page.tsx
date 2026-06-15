@@ -4,6 +4,7 @@ import ResetButton from "@/components/ResetButton";
 import DeactivateButton from "@/components/DeactivateButton";
 import ScrollToBottom from "@/components/ScrollToBottom";
 import QRList from "@/components/QRList";
+import { getLogoUrl } from "@/lib/logo";
 
 export const dynamic = "force-dynamic";
 
@@ -26,6 +27,9 @@ export default async function AdminBatchPage({ params }: Props) {
   const totalQR = batch.qrs.length;
   const usedQR = batch.qrs.filter((qr) => qr.status === "USED").length;
   const activeQR = totalQR - usedQR;
+  
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  const logoUrl = await getLogoUrl();
 
   return (
     <main className="max-w-md mx-auto p-4">
@@ -73,7 +77,8 @@ export default async function AdminBatchPage({ params }: Props) {
           token: qr.token,
           status: qr.status,
         }))}
-		baseUrl={process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}
+		baseUrl={baseUrl}
+        logoUrl={logoUrl}
       />
 
       <div id="batch-actions" className="mt-8">

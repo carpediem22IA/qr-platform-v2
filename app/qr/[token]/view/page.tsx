@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { QRCodeSVG } from "qrcode.react";
 import BackButton from "@/components/BackButton";
+import { getLogoUrl } from "@/lib/logo";
 
 // ========================================
 // VISTA DETALLE DE UN QR
@@ -32,6 +33,8 @@ export default async function QRViewPage({ params }: Props) {
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
   const sizePx = Math.round((qr.batch.qrSizeMm || 30) * 3.78);
+  
+  const logoUrl = await getLogoUrl();
 
   return (
     <main className="min-h-screen p-4 max-w-md mx-auto">
@@ -51,7 +54,7 @@ export default async function QRViewPage({ params }: Props) {
           includeMargin={true}
           className="max-w-full h-auto"
 		  imageSettings={{
-            src: "/logo.webp",
+            src: logoUrl,
             height: Math.round(Math.min(sizePx * 2, 280) * 0.2),
             width: Math.round(Math.min(sizePx * 2, 280) * 0.2),
             excavate: true,

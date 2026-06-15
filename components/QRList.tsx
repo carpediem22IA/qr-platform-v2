@@ -18,7 +18,7 @@ interface QRData {
   status: string;
 }
 
-export default function QRList({ qrs, baseUrl }: { qrs: QRData[]; baseUrl: string }) {
+export default function QRList({ qrs, baseUrl, logoUrl }: { qrs: QRData[]; baseUrl: string; logoUrl: string }) {
   const [search, setSearch] = useState("");
 
   const filtered = qrs.filter((qr) => {
@@ -68,7 +68,7 @@ export default function QRList({ qrs, baseUrl }: { qrs: QRData[]; baseUrl: strin
                   level="M"
                   includeMargin={false}
 				  imageSettings={{
-                    src: "/logo.webp",
+                    src: logoUrl,
                     height: 13,
                     width: 13,
                     excavate: true,

@@ -50,3 +50,8 @@ enum QRStatus {
   ACTIVE
   USED
 }
+
+model Settings {
+  key   String @id
+  value String
+}

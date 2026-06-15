@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { QRCodeSVG } from "qrcode.react";
 import PrintButton from "@/components/PrintButton";
 import DownloadPDFButton from "@/components/DownloadPDFButton";
+import { getLogoUrl } from "@/lib/logo";
 
 // ========================================
 // VISTA DE IMPRESIÓN DEL LOTE
@@ -45,6 +46,8 @@ export default async function BatchPrintPage({ params, searchParams }: Props) {
 
   const baseUrl =
     process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+	
+  const logoUrl = await getLogoUrl();	
 
   return (
     <>
@@ -146,7 +149,7 @@ export default async function BatchPrintPage({ params, searchParams }: Props) {
                   level="M"
                   includeMargin={false}
                   imageSettings={{
-                    src: "/logo.webp",
+                    src: logoUrl,
                     height: Math.round(batch.qrSizeMm * 3.78) * 0.2,
                     width: Math.round(batch.qrSizeMm * 3.78) * 0.2,
                     excavate: true,

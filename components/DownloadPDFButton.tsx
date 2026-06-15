@@ -3,6 +3,7 @@
 // ========================================
 // BOTÓN DESCARGAR PDF
 // Genera PDF real con qrcode + jspdf
+// Incluye logo superpuesto desde Supabase
 // ========================================
 
 import { useState } from "react";
@@ -35,6 +36,16 @@ export default function DownloadPDFButton({
     setLoading(true);
 
     try {
+      // Obtener URL del logo desde la API
+      let logoUrl = "/logo.webp";
+      try {
+        const res = await fetch("/api/admin/logo");
+        if (res.ok) {
+          const data = await res.json();
+          logoUrl = data.url;
+        }
+      } catch {}
+
       const pdf = new jsPDF("p", "mm", "a4");
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
@@ -45,7 +56,6 @@ export default function DownloadPDFButton({
       const cardWidth = qrSize + cardPadding * 2;
       const cardHeight = qrSize + cardPadding * 2;
 
-      // Calcular columnas dinámicamente
       const availableWidth = pageWidth - margin * 2;
       const cols = Math.max(1, Math.floor((availableWidth + spacing) / (cardWidth + spacing)));
       const totalCardsWidth = cardWidth * cols + spacing * (cols - 1);
@@ -82,23 +92,46 @@ export default function DownloadPDFButton({
         const cardX = x;
         const cardY = y + 2;
 
+        // Tarjeta
         pdf.setDrawColor(226, 232, 240);
         pdf.setLineWidth(0.5);
         pdf.roundedRect(cardX, cardY, cardWidth, cardHeight, 2, 2, "S");
 
+        // QR
         const qrX = cardX + cardPadding;
         const qrY = cardY + cardPadding;
         pdf.addImage(dataUrl, "JPEG", qrX, qrY, qrSize, qrSize);
 
+        // Logo superpuesto en el centro del QR
+        try {
+          const logoResponse = await fetch(logoUrl);
+          const logoBlob = await logoResponse.blob();
+          const logoBase64 = await new Promise<string>((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result as string);
+            reader.readAsDataURL(logoBlob);
+          });
+
+          const logoSize = qrSize * 0.2;
+          const logoX = qrX + (qrSize - logoSize) / 2;
+          const logoY = qrY + (qrSize - logoSize) / 2;
+          pdf.addImage(logoBase64, "PNG", logoX, logoY, logoSize, logoSize);
+        } catch {
+          // Sin logo, no pasa nada
+        }
+
+        // Número QR
         pdf.setFontSize(8);
         pdf.setTextColor(30, 41, 59);
         const qrLabel = `QR ${String(qr.qrNumber).padStart(4, "0")}`;
         pdf.text(qrLabel, cardX + cardWidth / 2, cardY + cardHeight + 4, { align: "center" });
 
+        // Token
         pdf.setFontSize(6);
         pdf.setTextColor(148, 163, 184);
         pdf.text(qr.token, cardX + cardWidth / 2, cardY + cardHeight + 10, { align: "center" });
 
+        // Avanzar posición
         if ((i + 1) % cols === 0) {
           x = startX;
           y += cardHeight + spacing + 14;
@@ -112,6 +145,7 @@ export default function DownloadPDFButton({
         }
       }
 
+      // Marca en cada página
       const totalPages = pdf.getNumberOfPages();
       for (let i = 1; i <= totalPages; i++) {
         pdf.setPage(i);
