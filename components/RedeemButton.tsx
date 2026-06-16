@@ -27,6 +27,19 @@ export default function RedeemButton({ token }: Props) {
       });
 
       if (res.ok) {
+        // Obtener URL del contenido desde la API
+        try {
+          const contentRes = await fetch("/api/admin/content-url");
+          if (contentRes.ok) {
+            const data = await contentRes.json();
+            router.refresh();
+            setTimeout(() => {
+              window.location.href = data.url || "/descarga.pdf";
+            }, 300);
+            return;
+          }
+        } catch {}
+        
         router.refresh();
         setTimeout(() => {
           window.location.href = "/descarga.pdf";
