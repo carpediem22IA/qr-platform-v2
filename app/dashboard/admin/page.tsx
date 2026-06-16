@@ -167,7 +167,7 @@ export default function AdminPage() {
       <div className="flex gap-3 mb-6">
         <Link
           href="/dashboard"
-          className="text-sm rounded-xl bg-indigo-600 text-white px-4 py-2 font-medium hover:bg-indigo-700 transition"
+          className="flex-1 text-sm rounded-xl bg-indigo-600 text-white px-4 py-2 font-medium hover:bg-indigo-700 transition text-center"
         >
           Dashboard
         </Link>
@@ -177,16 +177,10 @@ export default function AdminPage() {
             await fetch("/api/auth/logout-master", { method: "POST" });
             router.push("/");
           }}
-          className="text-sm rounded-xl border border-red-200 text-red-500 px-4 py-2 font-medium hover:bg-red-50 transition"
+          className="flex-1 text-sm rounded-xl border border-red-200 text-red-500 px-4 py-2 font-medium hover:bg-red-50 transition"
         >
           Cerrar sesión
         </button>
-		<Link
-          href="/dashboard/admin/contenido"
-          className="text-sm rounded-xl bg-indigo-600 text-white px-4 py-2 font-medium hover:bg-indigo-700 transition"
-        >
-          Contenido
-        </Link>
       </div>
 
       <h1 className="text-2xl font-bold mb-6 text-slate-800">
@@ -216,6 +210,23 @@ export default function AdminPage() {
           >
             {maintenance ? "⚠️ ACTIVO" : "Normal"}
           </button>
+        </div>
+      </div>
+
+      {/* CONTENIDO DESCARGABLE */}
+      <div className="bg-white rounded-2xl border border-purple-100 shadow-sm p-4 mb-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="font-medium text-slate-800 text-sm">Contenido descargable</div>
+            <div className="text-xs text-slate-500">Archivo que se descarga al canjear</div>
+          </div>
+          <Link
+            href="/dashboard/admin/contenido"
+            className="px-4 py-2 rounded-xl text-sm font-medium transition"
+            style={{ backgroundColor: "#79449d", color: "white" }}
+          >
+            📦 Gestionar
+          </Link>
         </div>
       </div>
 
