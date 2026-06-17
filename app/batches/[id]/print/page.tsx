@@ -103,7 +103,7 @@ export default async function BatchPrintPage({ params, searchParams }: Props) {
           {batch.qrs.length} QR · {batch.qrSizeMm || 30} mm · {Math.round((batch.qrSizeMm || 30) * 3.78)} px
         </p>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 mb-2">
           <PrintButton batchId={batch.id} />
           <DownloadPDFButton
             batchNumber={batch.batchNumber}
@@ -115,13 +115,13 @@ export default async function BatchPrintPage({ params, searchParams }: Props) {
             baseUrl={baseUrl}
             qrSizeMm={batch.qrSizeMm || 30}
           />
-          <button
-            disabled
-            className="bg-purple-600 text-white px-6 py-3 rounded-xl font-medium opacity-50 cursor-not-allowed"
-          >
-            📋 Hoja de control
-          </button>
         </div>
+        <button
+          disabled
+          className="w-full bg-purple-600 text-white px-3 py-3 rounded-xl text-sm font-medium opacity-50 cursor-not-allowed"
+        >
+          📋 Hoja de control
+        </button>
       </div>
 
       <div className="w-full max-w-4xl mx-auto p-4 overflow-hidden">
