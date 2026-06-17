@@ -24,7 +24,14 @@ export default function LogoPage() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files?.[0];
     if (selected) {
+      if (selected.size > 4.5 * 1024 * 1024) {
+        setMessage("❌ El archivo es demasiado grande (máx. 4.5 MB)");
+        setFile(null);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        return;
+      }
       setFile(selected);
+      setMessage("");
       const reader = new FileReader();
       reader.onload = () => setPreview(reader.result as string);
       reader.readAsDataURL(selected);
@@ -94,6 +101,10 @@ export default function LogoPage() {
         <p className="text-sm text-slate-600 mb-4">
           Selecciona una imagen para el centro de los QR. Formatos permitidos: PNG, JPG, WebP.
         </p>
+		
+		<p className="text-xs text-amber-600 mb-3">
+          ⚠️ Tamaño máximo: 4.5 MB
+        </p>
 
         {/* INPUT DE ARCHIVO */}
         <input
@@ -104,7 +115,7 @@ export default function LogoPage() {
           className="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-medium file:bg-indigo-50 file:text-indigo-600 hover:file:bg-indigo-100"
         />
         <p className="text-xs text-slate-400 mt-2 break-all">
-          {file ? file.name : "Ningún archivo seleccionado"}
+          {file ? `${file.name} (${(file.size / 1024 / 1024).toFixed(1)} MB)` : "Ningún archivo seleccionado"}
         </p>
       </div>
 
