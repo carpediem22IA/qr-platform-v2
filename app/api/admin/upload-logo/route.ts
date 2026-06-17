@@ -19,7 +19,7 @@ export async function POST(request: Request) {
     }
 
     // Validar tipo de imagen
-    const allowedTypes = ["image/png", "image/jpeg", "image/webp"];
+    const allowedTypes = ["image/png", "image/jpeg", "image/webp", "image/gif", "image/bmp", "image/svg+xml", "image/tiff", "image/x-icon", "image/heic", "image/heif"];
     if (!allowedTypes.includes(file.type)) {
       return NextResponse.json(
         { error: "Formato no permitido. Usa PNG, JPG o WebP" },

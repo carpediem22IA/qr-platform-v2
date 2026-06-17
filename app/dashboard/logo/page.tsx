@@ -99,7 +99,7 @@ export default function LogoPage() {
       {/* INSTRUCCIONES */}
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 mb-6">
         <p className="text-sm text-slate-600 mb-4">
-          Selecciona una imagen para el centro de los QR. Formatos permitidos: PNG, JPG, WebP.
+          Selecciona una imagen para el centro de los QR. Se aceptan todos los formatos de imagen.
         </p>
 		
 		<p className="text-xs text-amber-600 mb-3">
@@ -110,7 +110,7 @@ export default function LogoPage() {
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/png,image/jpeg,image/webp"
+          accept="image/*"
           onChange={handleFileChange}
           className="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-medium file:bg-indigo-50 file:text-indigo-600 hover:file:bg-indigo-100"
         />
