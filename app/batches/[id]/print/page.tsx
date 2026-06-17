@@ -115,6 +115,12 @@ export default async function BatchPrintPage({ params, searchParams }: Props) {
             baseUrl={baseUrl}
             qrSizeMm={batch.qrSizeMm || 30}
           />
+          <button
+            disabled
+            className="bg-purple-600 text-white px-6 py-3 rounded-xl font-medium opacity-50 cursor-not-allowed"
+          >
+            📋 Hoja de control
+          </button>
         </div>
       </div>
 
