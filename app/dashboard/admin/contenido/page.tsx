@@ -38,7 +38,7 @@ export default function ContenidoPage() {
       // Subir directamente a Supabase Storage
       const { error } = await supabase.storage
         .from("descargas")
-        .upload("contenido-descargable", file, {
+          .upload(file.name, file, {
           upsert: true,
         });
 
@@ -47,7 +47,7 @@ export default function ContenidoPage() {
       // Obtener URL pública
       const { data: urlData } = supabase.storage
         .from("descargas")
-        .getPublicUrl("contenido-descargable");
+        .getPublicUrl(file.name);
 
       // Guardar URL en Settings via API
       await fetch("/api/admin/save-content-url", {
