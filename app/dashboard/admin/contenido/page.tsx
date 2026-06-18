@@ -2,10 +2,12 @@
 
 // ========================================
 // PÁGINA PARA CAMBIAR EL CONTENIDO DESCARGABLE
+// Subida directa a Supabase (hasta 50 MB)
 // ========================================
 
 import { useRef, useState } from "react";
 import Link from "next/link";
+import { supabase } from "@/lib/supabase-client";
 
 export default function ContenidoPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -16,8 +18,8 @@ export default function ContenidoPage() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files?.[0];
     if (selected) {
-      if (selected.size > 4.5 * 1024 * 1024) {
-        setMessage("❌ El archivo es demasiado grande (máx. 4.5 MB)");
+      if (selected.size > 50 * 1024 * 1024) {
+        setMessage("❌ El archivo es demasiado grande (máx. 50 MB)");
         setFile(null);
         if (fileInputRef.current) fileInputRef.current.value = "";
         return;
@@ -33,25 +35,32 @@ export default function ContenidoPage() {
     setMessage("");
 
     try {
-      const formData = new FormData();
-      formData.append("file", file);
+      // Subir directamente a Supabase Storage
+      const { error } = await supabase.storage
+        .from("descargas")
+        .upload("contenido-descargable", file, {
+          upsert: true,
+        });
 
-      const res = await fetch("/api/admin/upload-content", {
+      if (error) throw error;
+
+      // Obtener URL pública
+      const { data: urlData } = supabase.storage
+        .from("descargas")
+        .getPublicUrl("contenido-descargable");
+
+      // Guardar URL en Settings via API
+      await fetch("/api/admin/save-content-url", {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: urlData.publicUrl }),
       });
 
-      const data = await res.json();
-
-      if (res.ok) {
-        setMessage("✅ Contenido actualizado correctamente");
-        setFile(null);
-        if (fileInputRef.current) fileInputRef.current.value = "";
-      } else {
-        setMessage(`❌ ${data.error || "Error al subir"}`);
-      }
-    } catch {
-      setMessage("❌ Error de conexión");
+      setMessage("✅ Contenido actualizado correctamente");
+      setFile(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    } catch (error: any) {
+      setMessage(`❌ ${error.message || "Error al subir"}`);
     } finally {
       setLoading(false);
     }
@@ -80,9 +89,9 @@ export default function ContenidoPage() {
         <p className="text-sm text-slate-600 mb-4">
           Sube el archivo que se descargará al canjear un QR (PDF, imagen, etc.)
         </p>
-		
-		<p className="text-xs text-amber-600 mb-3">
-          ⚠️ Tamaño máximo: 4.5 MB
+
+        <p className="text-xs text-amber-600 mb-3">
+          ⚠️ Tamaño máximo: 50 MB
         </p>
 
         <input
@@ -117,7 +126,8 @@ export default function ContenidoPage() {
           </button>
         </div>
       )}
-	  <style>
+
+      <style>
         {`
           input[type="file"] {
             color: transparent;
