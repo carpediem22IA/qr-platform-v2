@@ -1,5 +1,11 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { createBackup } from "@/lib/backup";
+
+// ========================================
+// API ELIMINAR LOTE
+// Hace backup antes de borrar
+// ========================================
 
 export async function DELETE(
   _request: Request,
@@ -13,8 +19,14 @@ export async function DELETE(
   });
 
   if (!batch) {
-    return NextResponse.json({ error: "Lote no encontrado" }, { status: 404 });
+    return NextResponse.json(
+      { error: "Lote no encontrado" },
+      { status: 404 }
+    );
   }
+
+  // Backup antes de eliminar
+  await createBackup(num, "DELETED");
 
   await prisma.qR.deleteMany({ where: { batchId: batch.id } });
   await prisma.batch.delete({ where: { id: batch.id } });

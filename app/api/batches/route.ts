@@ -7,6 +7,8 @@ import { prisma } from "@/lib/prisma";
 
 import { generateUniqueToken } from "@/lib/generateUniqueToken";
 
+import { createBackup } from "@/lib/backup";
+
 
 export async function POST(request: Request) {
   try {
@@ -67,6 +69,9 @@ export async function POST(request: Request) {
         qrSizeMm: Number(body.qrSizeMm) || 30,
       },
     });
+	
+	// Después de crear el batch:
+    await createBackup(nextBatchNumber, "CREATED");
 	
 	
 	// ========================================

@@ -55,3 +55,11 @@ model Settings {
   key   String @id
   value String
 }
+
+model BatchBackup {
+  id          String   @id @default(uuid())
+  batchNumber Int
+  data        String   // JSON con lote y sus QR
+  action      String   // CREATED, DELETED
+  createdAt   DateTime @default(now())
+}

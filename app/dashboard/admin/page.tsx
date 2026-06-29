@@ -113,6 +113,22 @@ export default function AdminPage() {
       },
     });
   };
+  
+  // Vaciar backup
+  const handleClearBackup = () => {
+    setModal({
+      open: true,
+      title: "🗑️ Vaciar backup",
+      message: "¿Eliminar todos los registros de la tabla de backup?",
+      confirmText: "🗑 Vaciar backup",
+      onConfirm: async () => {
+        closeModal();
+        await fetch("/api/admin/clear-backup", { method: "POST" });
+        setMessage("✅ Tabla de backup vaciada");
+        setTimeout(() => window.location.reload(), 500);
+      },
+    });
+  };
 
   // Vaciar base de datos
   const handleResetAllData = () => {
@@ -260,7 +276,7 @@ export default function AdminPage() {
       </div>
 
       {/* LISTADO DE LOTES */}
-      <h2 className="font-semibold text-slate-700 mb-3">Acciones por lote</h2>
+      <h2 className="font-semibold text-slate-700 mb-3 mt-6">Acciones por lote</h2>
       <div className="space-y-3">
         {batches.map((batch) => (
           <div
@@ -316,6 +332,20 @@ export default function AdminPage() {
             </div>
           </div>
         ))}
+      </div>
+	  
+	  {/* VACIAR BACKUP */}
+      <div className="bg-white rounded-2xl border border-amber-200 shadow-sm p-6 mb-6 mt-6">
+        <h2 className="font-semibold text-amber-600 mb-4">
+          Backup de lotes
+        </h2>
+
+        <button
+          onClick={handleClearBackup}
+          className="w-full bg-amber-600 text-white p-4 rounded-xl font-medium hover:bg-amber-700"
+        >
+          🗑️ Vaciar tabla de backup
+        </button>
       </div>
 
       {/* VACIAR TODO */}
