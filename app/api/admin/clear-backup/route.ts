@@ -7,23 +7,24 @@ import { NextResponse } from "next/server";
 // ========================================
 
 export async function POST() {
-  // Obtener todos los números de lote activos
   const activeBatches = await prisma.batch.findMany({
     select: { batchNumber: true },
   });
   const activeNumbers = activeBatches.map((b) => b.batchNumber);
 
-  // Borrar backups de lotes que ya no existen
+  let count = 0;
+
   if (activeNumbers.length > 0) {
-    await prisma.batchBackup.deleteMany({
+    const result = await prisma.batchBackup.deleteMany({
       where: {
         batchNumber: { notIn: activeNumbers },
       },
     });
+    count = result.count;
   } else {
-    // Si no hay lotes activos, borrar todo
-    await prisma.batchBackup.deleteMany();
+    const result = await prisma.batchBackup.deleteMany();
+    count = result.count;
   }
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ success: true, count });
 }

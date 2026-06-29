@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import ConfirmModal from "@/components/ConfirmModal";
+import { useToast } from "@/components/ToastContext";
 
 interface BatchData {
   id: string;
@@ -22,6 +23,7 @@ interface BatchData {
 
 export default function AdminPage() {
   const router = useRouter();
+  const toast = useToast();
   const [batches, setBatches] = useState<BatchData[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
@@ -114,18 +116,22 @@ export default function AdminPage() {
     });
   };
   
-  // Vaciar backup
+  // Limpiar backups antiguos
     const handleClearBackup = () => {
     setModal({
       open: true,
       title: "🧹 Limpiar backups antiguos",
       message: "¿Eliminar backups de lotes que ya no existen? Los backups de lotes activos se conservan.",
       confirmText: "🧹 Limpiar backups",
-      onConfirm: async () => {
+        onConfirm: async () => {
         closeModal();
-        await fetch("/api/admin/clear-backup", { method: "POST" });
-        setMessage("✅ Tabla de backup vaciada");
-        setTimeout(() => window.location.reload(), 500);
+        const res = await fetch("/api/admin/clear-backup", { method: "POST" });
+        const data = await res.json();
+        if (data.count > 0) {
+          toast.showToast("Limpieza realizada correctamente", "success");
+        } else {
+          toast.showToast("No se encontraron registros antiguos", "success");
+        }
       },
     });
   };
