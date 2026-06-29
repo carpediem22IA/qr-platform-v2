@@ -115,12 +115,12 @@ export default function AdminPage() {
   };
   
   // Vaciar backup
-  const handleClearBackup = () => {
+    const handleClearBackup = () => {
     setModal({
       open: true,
-      title: "🗑️ Vaciar backup",
-      message: "¿Eliminar todos los registros de la tabla de backup?",
-      confirmText: "🗑 Vaciar backup",
+      title: "🧹 Limpiar backups antiguos",
+      message: "¿Eliminar backups de lotes que ya no existen? Los backups de lotes activos se conservan.",
+      confirmText: "🧹 Limpiar backups",
       onConfirm: async () => {
         closeModal();
         await fetch("/api/admin/clear-backup", { method: "POST" });
@@ -337,14 +337,14 @@ export default function AdminPage() {
 	  {/* VACIAR BACKUP */}
       <div className="bg-white rounded-2xl border border-amber-200 shadow-sm p-6 mb-6 mt-6">
         <h2 className="font-semibold text-amber-600 mb-4">
-          Backup de lotes
+          Limpiar backups antiguos
         </h2>
 
         <button
           onClick={handleClearBackup}
           className="w-full bg-amber-600 text-white p-4 rounded-xl font-medium hover:bg-amber-700"
         >
-          🗑️ Vaciar tabla de backup
+          🧹 Limpiar backups
         </button>
       </div>
 
