@@ -50,13 +50,18 @@ export default function ControlCheckboxes({ qrs }: Props) {
   };
 
   const handleSave = async () => {
+    const toPeg = qrs.filter((qr) => checked.has(qr.id) && !qr.peggedAt).map((q) => q.id);
+    const toUnpeg = qrs.filter((qr) => !checked.has(qr.id) && qr.peggedAt).map((q) => q.id);
+
+    if (toPeg.length === 0 && toUnpeg.length === 0) {
+      setMessage("ℹ️ No hay cambios realizados");
+      return;
+    }
+
     setLoading(true);
     setMessage("");
 
     try {
-      const toPeg = qrs.filter((qr) => checked.has(qr.id) && !qr.peggedAt).map((q) => q.id);
-      const toUnpeg = qrs.filter((qr) => !checked.has(qr.id) && qr.peggedAt).map((q) => q.id);
-
       const res = await fetch("/api/qr/peg", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
