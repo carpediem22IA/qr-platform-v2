@@ -4,6 +4,7 @@ import { QRCodeSVG } from "qrcode.react";
 import PrintButton from "@/components/PrintButton";
 import DownloadPDFButton from "@/components/DownloadPDFButton";
 import { getLogoUrl } from "@/lib/logo";
+import ControlSheetButton from "@/components/ControlSheetButton";
 
 // ========================================
 // VISTA DE IMPRESIÓN DEL LOTE
@@ -116,12 +117,7 @@ export default async function BatchPrintPage({ params, searchParams }: Props) {
             qrSizeMm={batch.qrSizeMm || 30}
           />
         </div>
-        <button
-          disabled
-          className="w-full bg-purple-600 text-white px-3 py-3 rounded-xl text-sm font-medium opacity-50 cursor-not-allowed"
-        >
-          📋 Hoja de control
-        </button>
+               <ControlSheetButton batchId={batch.id} />
       </div>
 
       <div className="w-full max-w-4xl mx-auto p-4 overflow-hidden">

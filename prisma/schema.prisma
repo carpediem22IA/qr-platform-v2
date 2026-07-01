@@ -38,6 +38,8 @@ model QR {
   createdAt   DateTime @default(now())
 
   redeemedAt  DateTime?
+  
+  peggedAt    DateTime?
 
   batchId     String
 
