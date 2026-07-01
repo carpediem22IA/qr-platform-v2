@@ -57,28 +57,21 @@ export default async function ControlPrintPage({ params }: Props) {
           {batch.name} · {batch.qrs.length} QR
         </p>
 
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="border-b-2 border-slate-300">
-              <th className="text-left py-2 text-sm text-slate-600 w-16">QR</th>
-              <th className="text-left py-2 text-sm text-slate-600">Token</th>
-              <th className="text-center py-2 text-sm text-slate-600 w-20">Pegado ✓</th>
-            </tr>
-          </thead>
-          <tbody>
-            {batch.qrs.map((qr) => (
-              <tr key={qr.qrNumber} className="border-b border-slate-200">
-                <td className="py-2 text-sm text-slate-800">
+        <div style={{ columnCount: 5, columnGap: "6mm", columnRule: "1px solid #cbd5e1" }}>
+          {batch.qrs.map((qr) => (
+            <div key={qr.qrNumber} style={{ breakInside: "avoid", marginBottom: "6mm", padding: "2mm 3mm" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2mm" }}>
+                <span style={{ fontSize: "12px", fontWeight: 600, color: "#1e293b" }}>
                   {qr.qrNumber.toString().padStart(4, "0")}
-                </td>
-                <td className="py-2 text-sm text-slate-500 font-mono">{qr.token}</td>
-                <td className="py-2 text-center">
-                  <span className="inline-block w-6 h-6 border-2 border-slate-300 rounded"></span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                </span>
+                <span style={{ display: "inline-block", width: "6mm", height: "6mm", border: "2px solid #94a3b8", borderRadius: "3px", marginLeft: "4mm" }}></span>
+              </div>
+              <div style={{ fontSize: "10px", color: "#64748b", fontFamily: "monospace" }}>
+                {qr.token}
+              </div>
+            </div>
+          ))}
+        </div>
       </main>
     </>
   );
