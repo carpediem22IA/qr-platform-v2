@@ -29,7 +29,7 @@ export default function ControlSheetModal({ open, batchId, onClose }: Props) {
 
         <div className="space-y-3">
           <Link
-            href={`/batches/${batchId}/print`}
+            href={`/batches/${batchId}/control-print`}
             className="block w-full rounded-xl bg-indigo-600 text-white p-4 text-center font-medium hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition"
           >
             🖨️ Imprimir listado
