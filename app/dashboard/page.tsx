@@ -59,20 +59,22 @@ export default async function DashboardPage() {
       </section>
 
       {/* ACCIONES FUTURAS */}
-       <div id="dashboard-actions" className="mt-8 flex gap-2">
-        <Link
-          href="/dashboard/stats"
-          className="flex-1 rounded-xl bg-emerald-600 text-white p-3 text-center font-medium hover:bg-emerald-700 shadow-sm shadow-emerald-200 transition"
-        >
-          Estadísticas
-        </Link>
-        <Link
-          href="/dashboard/logo"
-          className="flex-1 rounded-xl bg-indigo-600 text-white p-3 text-center font-medium hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition"
-        >
-          Logo QR
-        </Link>
-      </div>
+<div id="dashboard-actions" className="mt-8 flex gap-2">
+  <button
+    type="button"
+    disabled
+    className="flex-1 rounded-xl bg-gray-300 text-gray-500 p-3 text-center font-medium cursor-not-allowed"
+  >
+    Estadísticas
+  </button>
+  <button
+    type="button"
+    disabled
+    className="flex-1 rounded-xl bg-gray-300 text-gray-500 p-3 text-center font-medium cursor-not-allowed"
+  >
+    Logo QR
+  </button>
+</div>
 	  <div className="mt-8 text-center">
         <LogoutButton />
       </div>
