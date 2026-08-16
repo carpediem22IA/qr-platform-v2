@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: "/qr/:token/",
+        source: "/qr/:token",
         destination: "https://ubuntu-server.tail1a982d.ts.net/qr/:token/view",
         permanent: false,
       },
