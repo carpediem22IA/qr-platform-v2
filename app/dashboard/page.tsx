@@ -42,13 +42,12 @@ export default async function DashboardPage() {
       </div>
 
       {/* ACCIÓN PRINCIPAL */}
-      <button
-       type="button"
+      <Link
+       href="/batches/new"
        className="block w-full rounded-xl bg-indigo-600 text-white p-4 font-medium mb-6 text-center hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition"
-       onClick={() => alert("Función temporalmente deshabilitada. Contacta con soporte.")}
       >
-       + Crear lote
-      </button>
+      + Crear lote
+      </Link>
 
       {/* LISTADO LOTES */}
       <section>
