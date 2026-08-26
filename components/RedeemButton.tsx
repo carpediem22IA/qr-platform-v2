@@ -34,7 +34,7 @@ export default function RedeemButton({ token }: Props) {
             const data = await contentRes.json();
             router.refresh();
             setTimeout(() => {
-              window.location.href = data.url || "/descarga.pdf";
+              window.location.href = data.url || "https://k9wezkettmqodlry.public.blob.vercel-storage.com/regalo.pdf";
             }, 300);
             return;
           }
@@ -42,7 +42,7 @@ export default function RedeemButton({ token }: Props) {
         
         router.refresh();
         setTimeout(() => {
-          window.location.href = "/descarga.pdf";
+          window.location.href = "https://k9wezkettmqodlry.public.blob.vercel-storage.com/regalo.pdf";
         }, 300);
       } else {
         const data = await res.json();

@@ -10,8 +10,8 @@ export async function GET() {
     const setting = await prisma.settings.findUnique({
       where: { key: "content_url" },
     });
-    return NextResponse.json({ url: setting?.value || "/descarga.pdf" });
+    return NextResponse.json({ url: setting?.value || "https://k9wezkettmqodlry.public.blob.vercel-storage.com/regalo.pdf" });
   } catch {
-    return NextResponse.json({ url: "/descarga.pdf" });
+    return NextResponse.json({ url: "https://k9wezkettmqodlry.public.blob.vercel-storage.com/regalo.pdf" });
   }
 }
