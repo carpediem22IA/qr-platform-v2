@@ -1,38 +1,22 @@
 import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 
 // ========================================
 // API OBTENER URL DEL LOGO ACTUAL
+// Busca en Settings, si no hay usa logo local
 // ========================================
 
 export async function GET() {
-  const supabaseUrl = process.env.SUPABASE_URL;
-  
-  if (!supabaseUrl) {
+  try {
+    const setting = await prisma.settings.findUnique({
+      where: { key: "logo_url" },
+    });
+
+    return NextResponse.json({ 
+      url: setting?.value || "/logo.webp" 
+    });
+  } catch (error) {
+    console.error("Error obteniendo logo:", error);
     return NextResponse.json({ url: "/logo.webp" });
   }
-
-  // Listar archivos del bucket logos ordenados por fecha
-  const response = await fetch(
-    `${supabaseUrl}/storage/v1/object/list/logos`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.SUPABASE_SERVICE_KEY}`,
-      },
-    }
-  );
-
-  if (!response.ok) {
-    return NextResponse.json({ url: "/logo.webp" });
-  }
-
-  const data = await response.json();
-  
-  // Si hay archivos, usar el último
-  if (data?.length > 0) {
-    const lastFile = data[data.length - 1];
-    const url = `${supabaseUrl}/storage/v1/object/public/logos/${lastFile.name}`;
-    return NextResponse.json({ url });
-  }
-
-  return NextResponse.json({ url: "/logo.webp" });
 }

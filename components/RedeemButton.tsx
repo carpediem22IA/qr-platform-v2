@@ -3,6 +3,7 @@
 // ========================================
 // BOTÓN CANJEAR QR (CLIENTE)
 // Llama a la API para marcar como USED
+// y redirige al contenido descargable
 // ========================================
 
 import { useRouter } from "next/navigation";
@@ -39,7 +40,7 @@ export default function RedeemButton({ token }: Props) {
             return;
           }
         } catch {}
-        
+
         router.refresh();
         setTimeout(() => {
           window.location.href = "https://k9wezkettmqodlry.public.blob.vercel-storage.com/regalo.pdf";

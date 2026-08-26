@@ -39,7 +39,7 @@ export default function LogoPage() {
   };
 
   // ========================================
-  // SUBIR LOGO A SUPABASE
+  // SUBIR LOGO A VERCEL BLOB
   // ========================================
 
   const handleUpload = async () => {
@@ -101,8 +101,8 @@ export default function LogoPage() {
         <p className="text-sm text-slate-600 mb-4">
           Selecciona una imagen para el centro de los QR. Se aceptan todos los formatos de imagen.
         </p>
-		
-		<p className="text-xs text-amber-600 mb-3">
+
+        <p className="text-xs text-amber-600 mb-3">
           ⚠️ Tamaño máximo: 4.5 MB
         </p>
 

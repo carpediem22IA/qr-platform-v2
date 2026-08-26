@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { put } from "@vercel/blob";
 
 // ========================================
 // API SUBIR CONTENIDO DESCARGABLE
-// Guarda el archivo en Supabase Storage
+// Guarda el archivo en Vercel Blob
 // ========================================
 
 export async function POST(request: Request) {
@@ -18,52 +19,35 @@ export async function POST(request: Request) {
       );
     }
 
-    const supabaseUrl = process.env.SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
-
-    if (!supabaseUrl || !supabaseKey) {
+    // Validar tamaño máximo (50 MB)
+    if (file.size > 50 * 1024 * 1024) {
       return NextResponse.json(
-        { error: "Configuración de Supabase incompleta" },
-        { status: 500 }
+        { error: "El archivo es demasiado grande (máx. 50 MB)" },
+        { status: 400 }
       );
     }
 
-    // Nombre fijo para sobrescribir siempre el mismo archivo
-    const fileName = "contenido-descargable";
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    // Nombre del archivo en Blob
+    const extension = file.name.split(".").pop() || "pdf";
+    const fileName = `contenido-descargable-${Date.now()}.${extension}`;
 
-    const uploadResponse = await fetch(
-      `${supabaseUrl}/storage/v1/object/descargas/${fileName}`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${supabaseKey}`,
-          "Content-Type": file.type,
-          "x-upsert": "true",
-        },
-        body: buffer,
-      }
-    );
-
-    if (!uploadResponse.ok) {
-      const errorData = await uploadResponse.json();
-      return NextResponse.json(
-        { error: errorData.message || "Error al subir" },
-        { status: 500 }
-      );
-    }
-
-    const fileUrl = `${supabaseUrl}/storage/v1/object/public/descargas/${fileName}`;
+    // Subir a Vercel Blob
+    const blob = await put(fileName, file, {
+      access: "public",
+      addRandomSuffix: false,
+    });
 
     // Guardar URL en Settings
     await prisma.settings.upsert({
       where: { key: "content_url" },
-      update: { value: fileUrl },
-      create: { key: "content_url", value: fileUrl },
+      update: { value: blob.url },
+      create: { key: "content_url", value: blob.url },
     });
 
-    return NextResponse.json({ url: fileUrl });
+    return NextResponse.json({ 
+      success: true, 
+      url: blob.url 
+    });
   } catch (error) {
     console.error("Error al subir contenido:", error);
     return NextResponse.json(

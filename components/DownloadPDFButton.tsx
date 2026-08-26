@@ -3,7 +3,7 @@
 // ========================================
 // BOTÓN DESCARGAR PDF
 // Genera PDF real con qrcode + jspdf
-// Incluye logo superpuesto desde Supabase
+// Incluye logo superpuesto desde Vercel Blob
 // ========================================
 
 import { useState } from "react";
@@ -67,7 +67,7 @@ export default function DownloadPDFButton({
       // Título
       const today = new Date().toLocaleDateString();
       const px = Math.round(qrSizeMm * 3.78);
-      
+
       pdf.setFontSize(14);
       pdf.text(`Lote ${batchNumber} - ${batchName} - ${today}`, margin, margin + 5);
       pdf.setFontSize(10);

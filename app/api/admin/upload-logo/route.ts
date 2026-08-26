@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { put } from "@vercel/blob";
 
 // ========================================
-// API SUBIR LOGO A SUPABASE STORAGE
-// Recibe una imagen y la guarda en el bucket "logos"
+// API SUBIR LOGO A VERCEL BLOB
+// Recibe una imagen y la guarda en el Blob
 // ========================================
 
 export async function POST(request: Request) {
@@ -19,7 +20,19 @@ export async function POST(request: Request) {
     }
 
     // Validar tipo de imagen
-    const allowedTypes = ["image/png", "image/jpeg", "image/webp", "image/gif", "image/bmp", "image/svg+xml", "image/tiff", "image/x-icon", "image/heic", "image/heif"];
+    const allowedTypes = [
+      "image/png", 
+      "image/jpeg", 
+      "image/webp", 
+      "image/gif", 
+      "image/bmp", 
+      "image/svg+xml", 
+      "image/tiff", 
+      "image/x-icon", 
+      "image/heic", 
+      "image/heif"
+    ];
+    
     if (!allowedTypes.includes(file.type)) {
       return NextResponse.json(
         { error: "Formato no permitido. Usa PNG, JPG o WebP" },
@@ -27,52 +40,34 @@ export async function POST(request: Request) {
       );
     }
 
-    const supabaseUrl = process.env.SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
-
-    if (!supabaseUrl || !supabaseKey) {
+    // Validar tamaño máximo (4.5 MB)
+    if (file.size > 4.5 * 1024 * 1024) {
       return NextResponse.json(
-        { error: "Configuración de Supabase incompleta" },
-        { status: 500 }
+        { error: "El archivo es demasiado grande (máx. 4.5 MB)" },
+        { status: 400 }
       );
     }
 
-    // Subir a Supabase Storage
-    const fileName = `logo-${Date.now()}.${file.type.split("/")[1]}`;
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-
-    const uploadResponse = await fetch(
-      `${supabaseUrl}/storage/v1/object/logos/${fileName}`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${supabaseKey}`,
-          "Content-Type": file.type,
-        },
-        body: buffer,
-      }
-    );
-
-    if (!uploadResponse.ok) {
-      const errorData = await uploadResponse.json();
-      return NextResponse.json(
-        { error: errorData.message || "Error al subir la imagen" },
-        { status: 500 }
-      );
-    }
-
-    // URL pública del logo
-    const logoUrl = `${supabaseUrl}/storage/v1/object/public/logos/${fileName}`;
-	
-	// Guardar URL en la base de datos
-    await prisma.settings.upsert({
-      where: { key: "logo_url" },
-      update: { value: logoUrl },
-      create: { key: "logo_url", value: logoUrl },
+    // Subir a Vercel Blob
+    const extension = file.type.split("/")[1] || "png";
+    const fileName = `logo-${Date.now()}.${extension}`;
+    
+    const blob = await put(fileName, file, {
+      access: "public",
+      addRandomSuffix: false,
     });
 
-    return NextResponse.json({ url: logoUrl });
+    // Guardar URL en la base de datos
+    await prisma.settings.upsert({
+      where: { key: "logo_url" },
+      update: { value: blob.url },
+      create: { key: "logo_url", value: blob.url },
+    });
+
+    return NextResponse.json({ 
+      success: true, 
+      url: blob.url 
+    });
   } catch (error) {
     console.error("Error al subir logo:", error);
     return NextResponse.json(

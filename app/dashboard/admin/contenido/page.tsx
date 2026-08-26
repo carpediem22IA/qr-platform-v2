@@ -2,12 +2,11 @@
 
 // ========================================
 // PÁGINA PARA CAMBIAR EL CONTENIDO DESCARGABLE
-// Subida directa a Supabase (hasta 50 MB)
+// Subida a Vercel Blob (hasta 50 MB)
 // ========================================
 
 import { useRef, useState } from "react";
 import Link from "next/link";
-import { supabase } from "@/lib/supabase-client";
 
 export default function ContenidoPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -35,30 +34,24 @@ export default function ContenidoPage() {
     setMessage("");
 
     try {
-      // Subir directamente a Supabase Storage
-      const { error } = await supabase.storage
-        .from("descargas")
-          .upload(file.name, file, {
-          upsert: true,
-        });
+      // Subir archivo mediante API
+      const formData = new FormData();
+      formData.append("file", file);
 
-      if (error) throw error;
-
-      // Obtener URL pública
-      const { data: urlData } = supabase.storage
-        .from("descargas")
-        .getPublicUrl(file.name);
-
-      // Guardar URL en Settings via API
-      await fetch("/api/admin/save-content-url", {
+      const res = await fetch("/api/admin/upload-content", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: urlData.publicUrl }),
+        body: formData,
       });
 
-      setMessage("✅ Contenido actualizado correctamente");
-      setFile(null);
-      if (fileInputRef.current) fileInputRef.current.value = "";
+      const data = await res.json();
+
+      if (res.ok) {
+        setMessage("✅ Contenido actualizado correctamente");
+        setFile(null);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+      } else {
+        setMessage(`❌ ${data.error || "Error al subir"}`);
+      }
     } catch (error: any) {
       setMessage(`❌ ${error.message || "Error al subir"}`);
     } finally {
