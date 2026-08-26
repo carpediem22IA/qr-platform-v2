@@ -7,7 +7,7 @@ import type { NextRequest } from "next/server";
 // ========================================
 
 // Rutas que requieren contraseña
-const PROTECTED = ["/dashboard", "/batches/new", "/dashboard/stats"];
+const PROTECTED = ["/dashboard", "/batches/new", "/dashboard/stats", "/dashboard/logo"];
 
 // Rutas de API protegidas
 const PROTECTED_API = ["/api/batches"];

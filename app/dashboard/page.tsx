@@ -43,10 +43,10 @@ export default async function DashboardPage() {
 
       {/* ACCIÓN PRINCIPAL */}
       <Link
-       href="/batches/new"
-       className="block w-full rounded-xl bg-indigo-600 text-white p-4 font-medium mb-6 text-center hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition"
+        href="/batches/new"
+        className="block w-full rounded-xl bg-indigo-600 text-white p-4 font-medium mb-6 text-center hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition"
       >
-      + Crear lote
+        + Crear lote
       </Link>
 
       {/* LISTADO LOTES */}
@@ -58,27 +58,26 @@ export default async function DashboardPage() {
         <BatchSearch batches={batches as any} />
       </section>
 
-      {/* ACCIONES FUTURAS */}
-<div id="dashboard-actions" className="mt-8 flex gap-2">
-  <button
-    type="button"
-    disabled
-    className="flex-1 rounded-xl bg-gray-300 text-gray-500 p-3 text-center font-medium cursor-not-allowed"
-  >
-    Estadísticas
-  </button>
-  <button
-    type="button"
-    disabled
-    className="flex-1 rounded-xl bg-gray-300 text-gray-500 p-3 text-center font-medium cursor-not-allowed"
-  >
-    Logo QR
-  </button>
-</div>
-	  <div className="mt-8 text-center">
+      {/* ACCIONES */}
+      <div id="dashboard-actions" className="mt-8 flex gap-2">
+        <Link
+          href="/dashboard/stats"
+          className="flex-1 rounded-xl bg-white border border-indigo-200 text-indigo-600 p-3 text-center font-medium hover:bg-indigo-50 transition"
+        >
+          Estadísticas
+        </Link>
+        <Link
+          href="/dashboard/logo"
+          className="flex-1 rounded-xl bg-white border border-indigo-200 text-indigo-600 p-3 text-center font-medium hover:bg-indigo-50 transition"
+        >
+          Logo QR
+        </Link>
+      </div>
+
+      <div className="mt-8 text-center">
         <LogoutButton />
       </div>
-	  <ScrollToBottom targetId="dashboard-actions" />
+      <ScrollToBottom targetId="dashboard-actions" />
     </main>
   );
 }
