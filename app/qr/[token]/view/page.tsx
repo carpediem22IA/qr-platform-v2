@@ -33,12 +33,12 @@ export default async function QRViewPage({ params }: Props) {
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
   const sizePx = Math.round((qr.batch.qrSizeMm || 30) * 3.78);
-  
+
   const logoUrl = await getLogoUrl();
 
   return (
     <main className="min-h-screen p-4 max-w-md mx-auto">
-	
+
       <BackButton />
 
       <h1 className="text-xl font-bold mt-4 text-slate-800">
@@ -53,13 +53,13 @@ export default async function QRViewPage({ params }: Props) {
           level="M"
           includeMargin={true}
           className="max-w-full h-auto"
-		  imageSettings={{
+          imageSettings={{
             src: logoUrl,
             height: Math.round(Math.min(sizePx * 2, 280) * 0.2),
             width: Math.round(Math.min(sizePx * 2, 280) * 0.2),
             excavate: true,
           }}
-       />
+        />
       </div>
 
       {/* INFORMACIÓN */}
@@ -86,17 +86,17 @@ export default async function QRViewPage({ params }: Props) {
             {qr.batch.qrSizeMm || 30}mm · {sizePx}px
           </span>
         </div>
-		<div className="flex justify-between">
+        <div className="flex justify-between">
           <span className="text-sm text-slate-500">Creado</span>
           <span className="text-sm text-slate-800">
-            {new Date(qr.createdAt).toLocaleDateString("es-ES")}
+            {new Date(qr.createdAt).toLocaleDateString("es-ES", { timeZone: "Europe/Madrid" })}
           </span>
         </div>
         {qr.batch.printedAt && (
           <div className="flex justify-between">
             <span className="text-sm text-slate-500">Impreso</span>
             <span className="text-sm text-slate-800">
-              {new Date(qr.batch.printedAt).toLocaleDateString("es-ES")}
+              {new Date(qr.batch.printedAt).toLocaleDateString("es-ES", { timeZone: "Europe/Madrid" })}
             </span>
           </div>
         )}
@@ -110,15 +110,14 @@ export default async function QRViewPage({ params }: Props) {
             {qr.status === "ACTIVE" ? "Activo" : "Usado"}
           </span>
         </div>
-		{qr.redeemedAt && (
+        {qr.redeemedAt && (
           <div className="flex justify-between">
             <span className="text-sm text-slate-500">Canjeado</span>
             <span className="text-sm text-slate-800">
-              {new Date(qr.redeemedAt).toLocaleDateString("es-ES")} - {new Date(qr.redeemedAt).toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" })}
+              {new Date(qr.redeemedAt).toLocaleDateString("es-ES", { timeZone: "Europe/Madrid" })} - {new Date(qr.redeemedAt).toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Madrid" })}
             </span>
           </div>
         )}
-        
       </div>
     </main>
   );
